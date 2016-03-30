@@ -24,65 +24,157 @@
     <meta name="msapplication-TileImage" content="mstile-144x144.png">
     <meta name="theme-color" content="#ffffff"> -->
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<body class="clearfix">
+<body>
 
-<section class="sidebar">
-<header class="sidebar-bar">
-    CSS-Tools
-</header>
-<nav>
-    <span class="sidebar-link selected">Box-Shadow</span>
-    <span class="sidebar-link">Gradient</span>
-    <span class="sidebar-link">Border-radius</span>
-    <span class="sidebar-link">Triangles</span>
-</nav>
-</section>
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <ul class="right hide-on-sm-and-down">
+                <li><a href="#box-shadow" data-bind="click: changeActiveTab.bind($data, 'box-shadow'), css: activeTab()['name'] === 'box-shadow' ? 'selected' : ''">Box-Shadow</a></li>
+                <li><a href="#gradient" data-bind="click: changeActiveTab.bind($data, 'gradient')">Gradient</a></li>
+                <li><a href="#border-radius" data-bind="click: changeActiveTab.bind($data, 'border-radius')">Border-radius</a></li>
+                <li><a href="#triangles" data-bind="click: changeActiveTab.bind($data, 'triangles')">Triangles</a></li>
+                <li><a href="#rgb-to-hex" data-bind="click: changeActiveTab.bind($data, 'rgb-to-hex')">RGB to HEX</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<!-- <nav>
+<div class="nav-wrapper">
+  <a href="#" class="brand-logo">Logo</a>
+  <ul id="nav-mobile" class="right hide-on-med-and-down">
+    <li><a href="sass.html">Sass</a></li>
+    <li><a href="badges.html">Components</a></li>
+    <li><a href="collapsible.html">JavaScript</a></li>
+  </ul>
+</div>
+</nav> -->
 
 
-<div class="content" data-bind="style: { 'background-color': backgroundColor }">
-    <header class="content-bar">
-        CSS-Tools
-    </header>
-    <section class="box-content clearfix">
-        <div class="box-shadow col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2" data-bind="style: { 'box-shadow': boxShadowBuilder(), 'background-color': boxColor }">
-            <p data-bind="text: '-moz-box-shadow: ' + boxShadowBuilder()"></p>
-            <p data-bind="text: '-webkit-box-shadow: ' + boxShadowBuilder()"></p>
-            <p data-bind="text: 'box-shadow: ' + boxShadowBuilder()"></p>
+<div class="content">
+    <section class="box-content row" data-bind="template: { name: activeTab()['name'], data: activeTab()['data'] }"></section>
 
-            <label>Horizontal Length</label>
-            <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: horizontalLength" min="-100" max="100" />
+    <script type="text/html" id="box-shadow">
+        <div class="box-shadow col s8 offset-s2" data-bind="style: { 'box-shadow': boxShadowBuilder(), 'background-color': boxColor }">
 
-            <label>Vertical Length</label>
-            <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: verticalLength" min="-100" max="100" />
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn">
+                    <input type="radio" name="colorType" value="HEX" data-bind="checked: colorType" /> HEX
+                </label>
+                <label class="btn">
+                    <input type="radio" name="colorType" value="RGB" data-bind="checked: colorType" /> RGB
+                </label>
+                <label class="btn">
+                    <input type="radio" name="colorType" value="RGBA" data-bind="checked: colorType" /> RGBA
+                </label>
+            </div>
 
-            <label>Blur Radius</label>
-            <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: blurRadius" min="0" max="100" />
+            <div data-bind="text: '-moz-box-shadow: ' + boxShadowBuilder()"></div>
+            <div data-bind="text: '-webkit-box-shadow: ' + boxShadowBuilder()"></div>
+            <div data-bind="text: 'box-shadow: ' + boxShadowBuilder()"></div>
 
-            <label>Spread Radius</label>
-            <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: spreadRadius" min="-100" max="100" />
+            <label class="label-full-width">Horizontal Length</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: horizontalLength" min="-100" max="100" />
+            </p>
 
-            <label>Opacity</label>
-            <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: opacity" min="0" max="1" step="0.01" />
+            <label class="label-full-width">Vertical Length</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: verticalLength" min="-100" max="100" />
+            </p>
 
-            <label>Shadow Color</label>
-            <input type="color" class="ui-slider ui-slider-horizontal" data-bind="value: shadowColor" />
+            <label class="label-full-width">Blur Radius</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: blurRadius" min="0" max="100" />
+            </p>
 
-            <label>RGB?</label>
-            <input type="checkbox" class="ui-slider ui-slider-horizontal" data-bind="checked: isAlpha" />
+            <label class="label-full-width">Spread Radius</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: spreadRadius" min="-100" max="100" />
+            </p>
 
-            <label>Alpha?</label>
-            <input type="checkbox" class="ui-slider ui-slider-horizontal" data-bind="checked: isRgb" />
+            <label class="label-full-width">Opacity</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: opacity, enabled: colorType() === 'RGBA'" min="0" max="1" step="0.01" />
+            </p>
+
+            <label class="label-full-width">Shadow Color</label>
+            <input type="color" data-bind="value: shadowColor" />
+
+            <label class="label-full-width">Background Color</label>
+            <input type="color" data-bind="value: backgroundColor" />
+
+            <label class="label-full-width">Box Color</label>
+            <input type="color" data-bind="value: boxColor" />
+        </div>
+    </script>
+    <!-- /#box-shadow -->
+
+    <script type="text/html" id="border-radius">
+        <div class="border-radius col s8 offset-s2" data-bind="style: { 'border-radius': borderRadiusBuilder(), 'background-color': boxColor }">
+            <p data-bind="text: '-moz-border-radius: ' + borderRadiusBuilder()"></p>
+            <p data-bind="text: '-webkit-border-radius: ' + borderRadiusBuilder()"></p>
+            <p data-bind="text: 'border-radius: ' + borderRadiusBuilder()"></p>
+
+            <label>Radius All Corners</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: radiusAll" min="0" max="100" />
+            </p>
+
+            <label>Radius Top Left</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: radiusTopLeft" min="0" max="100" />
+            </p>
+
+            <label>Radius Top Right</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: radiusTopRight" min="0" max="100" />
+            </p>
+
+            <label>Radius Bottom Right</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: radiusBottomRight" min="0" max="100" />
+            </p>
+
+            <label>Radius Bottom Left</label>
+            <p class="range-field">
+                <input type="range" data-bind="textInput: radiusBottomLeft" min="0" max="100" />
+            </p>
+
+            <label>Border Color</label>
+            <input type="color" data-bind="value: borderColor" />
 
             <label>Background Color</label>
-            <input type="color" class="ui-slider ui-slider-horizontal" data-bind="value: backgroundColor" />
-
-            <label>Box Color</label>
-            <input type="color" class="ui-slider ui-slider-horizontal" data-bind="value: boxColor" />
+            <input type="color" data-bind="value: boxColor" />
         </div>
-    </section>
+    </script>
+
+    <script type="text/html" id="gradient">
+        Gradient goes here
+    </script>
+
+    <script type="text/html" id=triangles>
+        Triangles go here
+    </script>
+
+    <script type="text/html" id="rgb-to-hex">
+        <div class="col s6 offset-s3">
+            <label>RGB Color</label>
+            <input type="text" class="ui-input" data-bind="textInput: rgbColor" placeholder="(0, 0, 0)" />
+
+            <button type="button" class="waves-effect waves-teal btn btn-flat" data-bind="click: rgbConvert">Convert it!</button>
+
+
+            <label>HEX Color</label>
+            <input type="text" class="ui-input" data-bind="textInput: hexColor" placeholder="#000000 or #000" />
+            <div data-bind="text: hexColorConverted"></div>
+            <button type="button" class="waves-effect waves-teal btn btn-flat" data-bind="click: rgbConvert">Convert it!</button>
+        </div>
+    </script>
 </div>
 
 <footer>
@@ -91,6 +183,7 @@
 
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
 <script src="js/main.js"></script>
 
 </body>

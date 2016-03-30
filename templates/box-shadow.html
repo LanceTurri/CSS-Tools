@@ -1,0 +1,56 @@
+<div id="box_shadow" class="box-shadow col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2" data-bind="style: { 'box-shadow': boxShadowBuilder(), 'background-color': boxColor }">
+    <p data-bind="text: '-moz-box-shadow: ' + boxShadowBuilder()"></p>
+    <p data-bind="text: '-webkit-box-shadow: ' + boxShadowBuilder()"></p>
+    <p data-bind="text: 'box-shadow: ' + boxShadowBuilder()"></p>
+
+    <label class="label-full-width">
+        Horizontal Length
+        <input type="number" class="input-invisible" data-bind="textInput: horizontalLength" min="-100" max="100" />
+    </label>
+    <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: horizontalLength" min="-100" max="100" />
+
+    <label class="label-full-width">
+        Vertical Length
+        <input type="number" class="input-invisible" data-bind="textInput: verticalLength" min="-100" max="100" />
+    </label>
+    <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: verticalLength" min="-100" max="100" />
+
+    <label class="label-full-width">
+        Blur Radius
+        <input type="number" class="input-invisible" data-bind="textInput: blurRadius" min="0" max="100" />
+    </label>
+    <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: blurRadius" min="0" max="100" />
+
+    <label class="label-full-width">
+        Spread Radius
+        <input type="number" class="input-invisible" data-bind="textInput: spreadRadius" min="-100" max="100" />
+    </label>
+    <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: spreadRadius" min="-100" max="100" />
+
+    <label class="label-full-width">
+        Opacity
+        <input type="number" class="input-invisible" data-bind="textInput: opacity" min="0" max="1" step="0.01" />
+    </label>
+    <input type="range" class="ui-slider ui-slider-horizontal" data-bind="textInput: opacity, enabled: colorType() === 'RGBA'" min="0" max="1" step="0.01" />
+
+    <label class="label-full-width">Shadow Color</label>
+    <input type="color" class="ui-slider ui-slider-horizontal" data-bind="value: shadowColor" />
+
+    <label class="label-full-width">Background Color</label>
+    <input type="color" class="ui-slider ui-slider-horizontal" data-bind="value: backgroundColor" />
+
+    <label class="label-full-width">Box Color</label>
+    <input type="color" class="ui-slider ui-slider-horizontal" data-bind="value: boxColor" />
+
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-default">
+            <input type="radio" name="colorType" value="HEX" data-bind="checked: colorType" /> HEX
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="colorType" value="RGB" data-bind="checked: colorType" /> RGB
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="colorType" value="RGBA" data-bind="checked: colorType" /> RGBA
+        </label>
+    </div>
+</div>

@@ -17,6 +17,29 @@ function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
+var appViewModel = function() {
+    var self = this;
+
+    self.panels = ko.observable({
+        "box-shadow": new boxShadowViewModel(),
+        "border-radius": new borderRadiusViewModel(),
+        "rgb-to-hex": new rgbToHexViewModel()
+    });
+
+    self.activeTab = ko.observable({
+        name: 'box-shadow',
+        data: ko.observable(self.panels()['box-shadow'])
+    });
+
+    self.changeActiveTab = function(name) {
+        console.log(name);
+        self.activeTab()['name'] = name;
+        self.activeTab()['data'](self.panels()[name]);
+
+        console.log(self.activeTab());
+    }
+};
+
 var boxShadowViewModel = function() {
     var self = this;
     self.horizontalLength = ko.observable(10);
@@ -25,21 +48,19 @@ var boxShadowViewModel = function() {
     self.spreadRadius = ko.observable(0);
 
     self.shadowColor = ko.observable('#000000');
-    self.isAlpha = ko.observable(false);
-    self.isRgb = ko.observable(false);
+    self.colorType = ko.observable('HEX');
 
 
     self.backgroundColor = ko.observable('#f5f5f5');
-    self.boxColor = ko.observable('#e7a61a');
+    self.boxColor = ko.observable('#34495e');
 
     self.opacity = ko.observable(0.75);
     self.outlineOrInset = ko.observable('outline');
 
     self.colorBuilder = ko.computed(function() {
-    	console.log('isAlpha: ' + self.isAlpha() + ' self.isRgb: ' + self.isRgb())
-    	if (!self.isAlpha() && !self.isRgb()) {
-    		return self.backgroundColor();
-    	} else if (self.isRgb() && self.isAlpha()) {
+    	if (self.colorType() === 'HEX') {
+    		return self.shadowColor();
+    	} else if (self.colorType() === 'RGBA') {
     		return self.shadowColor().slice(-1) + ', ' + self.opacity() + ')';
     	} else {
     		return self.shadowColor();
@@ -51,13 +72,47 @@ var boxShadowViewModel = function() {
     });
 };
 
-var rgbToHexViewModel = function() {
+var borderRadiusViewModel = function() {
 	var self = this;
 
-	self.hexColor = ko.observable();
-	self.rgbColor = ko.observable();
+	self.radiusAll = ko.observable(50);
+	self.radiusTopLeft = ko.observable(50);
+	self.radiusTopRight = ko.observable(50);
+	self.radiusBottomRight = ko.observable(50);
+	self.radiusBottomLeft = ko.observable(50);
+
+	self.radiusAll.subscribe(function() {
+		// Set all radius to follow the all value
+		self.radiusTopLeft(self.radiusAll());
+		self.radiusTopRight(self.radiusAll());
+		self.radiusBottomRight(self.radiusAll());
+		self.radiusBottomLeft(self.radiusAll());
+	});
+
+	self.boxColor = ko.observable('#34495e');
+    self.borderColor = ko.observable('#e7a61a');
+
+    self.borderRadiusBuilder = ko.computed(function() {
+    	return self.radiusTopLeft() + 'px ' + self.radiusTopRight() + 'px ' + self.radiusBottomRight() + 'px ' +self.radiusBottomLeft() + 'px';
+    });
+}
+
+var rgbToHexViewModel = function() {
+    var self = this;
+
+    self.hexColor = ko.observable('');
+    self.rgbColor = ko.observable('');
+
+    self.hexColorConverted = ko.observable('');
+    self.rgbColorConverted = ko.observable('');
+
+    self.rgbConvert = function() {
+        var rgbTemp = self.rgbColor().replace('(', '').replace(')', '').split(',');
+        self.hexColorConverted(rgbToHex(parseInt(rgbTemp[0]), parseInt(rgbTemp[1]), parseInt(rgbTemp[2])));
+        return;
+    };
 };
 
 $(function() {
-    ko.applyBindings(new boxShadowViewModel());
+    ko.applyBindings(new appViewModel());
 });
