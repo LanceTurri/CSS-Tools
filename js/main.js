@@ -1,3 +1,6 @@
+// =============================================================================
+// VIEWMODEL FUNCTIONS
+// =============================================================================
 function hexToRgb(hex) {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -17,6 +20,37 @@ function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
+function createVendorPrefixes(cssString, cssPropertyName, prefixArray) {
+        // This will build the code to be put in the <pre> element.
+        var property = 'box-shadow';
+        var prefixes = [
+            '-moz-' + cssPropertyName + ': ',
+            '-webkit-' + cssPropertyName + ': ',
+            cssPropertyName + ': '
+        ]
+        var prefixesLength = prefixes.length;
+        var stringBuilder = '';
+        var i = 0;
+        
+        if ( prefixArray ) {
+            prefixes = prefixArray;
+        }
+        
+        for ( i; i < prefixesLength; i++ ) {
+            stringBuilder += prefixes[i];
+            stringBuilder += cssString + ';';
+            
+            if ( i < prefixesLength - 1 ) {
+                stringBuilder += '\n';
+            }
+        }
+        
+        return stringBuilder;
+}
+
+// =============================================================================
+// VIEWMODELS
+// =============================================================================
 var appViewModel = function() {
     var self = this;
 
@@ -49,10 +83,10 @@ var boxShadowViewModel = function() {
 
     self.shadowColor = ko.observable('#000000');
     self.colorType = ko.observable('HEX');
+    self.boxShadow = ko.observable('');
 
-
-    self.backgroundColor = ko.observable('#f5f5f5');
-    self.boxColor = ko.observable('#34495e');
+    self.backgroundColor = ko.observable('#f7f7f7');
+    self.boxColor = ko.observable('#f5f5f5');
 
     self.opacity = ko.observable(0.75);
     self.outlineOrInset = ko.observable('outline');
@@ -68,7 +102,25 @@ var boxShadowViewModel = function() {
     });
 
     self.boxShadowBuilder = ko.computed(function() {
-        return (self.horizontalLength() + 'px ' + self.verticalLength() + 'px ' + self.blurRadius() + 'px ' + self.spreadRadius() + 'px ' + self.colorBuilder());
+        var horizontalLength = self.horizontalLength() + 'px ';
+        var verticalLength = self.verticalLength() + 'px ';
+        var blurRadius = self.blurRadius() + 'px ';
+        var spreadRadius = self.spreadRadius() + 'px ';
+        var colorBuilder = self.colorBuilder();
+        
+        var boxShadowString = '';
+        
+        // Example string: '-18px 10px 5px 0px #000000'
+        boxShadowString += horizontalLength;
+        boxShadowString += verticalLength;
+        boxShadowString += blurRadius;
+        boxShadowString += spreadRadius;
+        boxShadowString += colorBuilder;
+        
+        // This is responsible for setting the box-shadow inline style
+        self.boxShadow(boxShadowString);
+        
+        return createVendorPrefixes(boxShadowString, 'box-shadow');
     });
 };
 
@@ -89,27 +141,76 @@ var borderRadiusViewModel = function() {
 		self.radiusBottomLeft(self.radiusAll());
 	});
 
-	self.boxColor = ko.observable('#34495e');
-    self.borderColor = ko.observable('#e7a61a');
+	self.boxColor = ko.observable('#f5f5f5');
+    self.borderColor = ko.observable('#cccccc');
+    self.borderRadius = ko.observable('');
 
     self.borderRadiusBuilder = ko.computed(function() {
-    	return self.radiusTopLeft() + 'px ' + self.radiusTopRight() + 'px ' + self.radiusBottomRight() + 'px ' +self.radiusBottomLeft() + 'px';
+        var topLeft = self.radiusTopLeft() + 'px ';
+        var topRight = self.radiusTopRight() + 'px ';
+        var bottomRight = self.radiusBottomRight() + 'px ';
+        var bottomLeft = self.radiusBottomLeft() + 'px';
+        
+        var borderRadiusString = '';
+        
+        borderRadiusString += topLeft;
+        borderRadiusString += topRight;
+        borderRadiusString += bottomRight;
+        borderRadiusString += bottomLeft;
+        
+        self.borderRadius(borderRadiusString);
+        
+    	return createVendorPrefixes(borderRadiusString, 'border-radius');
     });
 }
 
 var rgbToHexViewModel = function() {
     var self = this;
 
+    self.activeInputHex = null;
+    
     self.hexColor = ko.observable('');
+    self.hexColor.extend({ rateLimit: 100 });
+    self.hexColor.subscribe(function(newValue) {
+        var hexLength = newValue.replace('#', '').length;
+        
+        if ( (hexLength === 3 || hexLength === 6) && self.activeInputHex ) {
+            self.hexConvert(newValue);
+        }
+        
+        // TODO: Handle edge cases with this feature.
+        self.activeInputHex = true;
+    });
+    
     self.rgbColor = ko.observable('');
-
-    self.hexColorConverted = ko.observable('');
-    self.rgbColorConverted = ko.observable('');
-
-    self.rgbConvert = function() {
-        var rgbTemp = self.rgbColor().replace('(', '').replace(')', '').split(',');
-        self.hexColorConverted(rgbToHex(parseInt(rgbTemp[0]), parseInt(rgbTemp[1]), parseInt(rgbTemp[2])));
-        return;
+    self.rgbColor.extend({ rateLimit: 100 });
+    self.rgbColor.subscribe(function(newValue) {
+        var rgbTemp = newValue.replace('(', '').replace(')', '').split(',');
+        var rgbLength = rgbTemp.length;
+        
+        if ( rgbLength === 3 && !self.activeInputHex ) {
+            self.rgbConvert(rgbTemp);
+        }
+        
+        self.activeInputHex = false;
+    });
+    
+    self.rgbConvert = function(rgbArray) {
+        var rgbString = rgbToHex(parseInt(rgbArray[0]), parseInt(rgbArray[1]), parseInt(rgbArray[2]));
+        
+        self.hexColor(rgbString);
+    };
+    
+    self.hexConvert = function(hexColor) {
+        var rgbArray = hexToRgb(hexColor);
+        var rgbFormatted = [
+            rgbArray.b,
+            rgbArray.g,
+            rgbArray.r
+        ];
+        var rgbString = '(' + rgbFormatted.join(', ') + ')';
+        
+        self.rgbColor(rgbString);
     };
 };
 
