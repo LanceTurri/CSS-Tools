@@ -1,6 +1,7 @@
 /// <reference path="../typings/globals/knockout/index.d.ts" />
 /// <reference path="../typings/globals/jquery/index.d.ts" />
 
+
 // =============================================================================
 // VIEWMODEL FUNCTIONS
 // =============================================================================
@@ -57,173 +58,231 @@ function createVendorPrefixes(cssString: string, cssPropertyName: string, prefix
     return stringBuilder;
 }
 
+
 // =============================================================================
-// VIEWMODELS
+// MAIN APP VIEWMODEL
 // =============================================================================
-let appViewModel = function(): void {
-    const self = this;
-
-    self.panels = ko.observable({
-        "box-shadow": new boxShadowViewModel(),
-        "border-radius": new borderRadiusViewModel(),
-        "rgb-to-hex": new rgbToHexViewModel()
-    });
-
-    // Set default to box-shadow
-    self.activeTab = ko.observable({
-        name: 'box-shadow',
-        data: ko.observable(self.panels()['box-shadow'])
-    });
-
-    self.changeActiveTab = function(name: string): void {
-        console.log(name);
-        self.activeTab().name = name;
-        self.activeTab().data(self.panels()[name]);
-
-        console.log(self.activeTab());
-    }
-};
-
-let boxShadowViewModel = function(): void {
-    const self = this;
-    
-    self.horizontalLength = ko.observable(10);
-    self.verticalLength = ko.observable(10);
-    self.blurRadius = ko.observable(5);
-    self.spreadRadius = ko.observable(0);
-
-    self.shadowColor = ko.observable('#000000');
-    self.colorType = ko.observable('HEX');
-    self.boxShadow = ko.observable('');
-
-    self.backgroundColor = ko.observable('#f7f7f7');
-    self.boxColor = ko.observable('#f5f5f5');
-
-    self.opacity = ko.observable(0.75);
-    self.outlineOrInset = ko.observable('outline');
-
-    self.colorBuilder = ko.computed(function(): string {
-    	if (self.colorType() === 'HEX') {
-    		return self.shadowColor();
-    	} else if (self.colorType() === 'RGBA') {
-    		return self.shadowColor().slice(-1) + ', ' + self.opacity() + ')';
-    	} else {
-    		return self.shadowColor();
-    	}
-    });
-
-    self.boxShadowBuilder = ko.computed(function(): string {
-        let horizontalLength: string = self.horizontalLength() + 'px ';
-        let verticalLength: string = self.verticalLength() + 'px ';
-        let blurRadius: string = self.blurRadius() + 'px ';
-        let spreadRadius: string = self.spreadRadius() + 'px ';
-        let colorBuilder: string = self.colorBuilder();
-        
-        let boxShadowString: string = '';
-        
-        // Example string: '-18px 10px 5px 0px #000000'
-        boxShadowString += horizontalLength;
-        boxShadowString += verticalLength;
-        boxShadowString += blurRadius;
-        boxShadowString += spreadRadius;
-        boxShadowString += colorBuilder;
-        
-        // This is responsible for setting the box-shadow inline style
-        self.boxShadow(boxShadowString);
-        
-        return createVendorPrefixes(boxShadowString, 'box-shadow');
-    });
-};
-
-let borderRadiusViewModel = function(): void {
-	const self = this;
-
-	self.radiusAll = ko.observable(50);
-	self.radiusTopLeft = ko.observable(50);
-	self.radiusTopRight = ko.observable(50);
-	self.radiusBottomRight = ko.observable(50);
-	self.radiusBottomLeft = ko.observable(50);
-
-	self.radiusAll.subscribe(function() {
-		// Set all radius to follow the all value
-		self.radiusTopLeft(self.radiusAll());
-		self.radiusTopRight(self.radiusAll());
-		self.radiusBottomRight(self.radiusAll());
-		self.radiusBottomLeft(self.radiusAll());
-	});
-
-	self.boxColor = ko.observable('#f5f5f5');
-    self.borderColor = ko.observable('#cccccc');
-    self.borderRadius = ko.observable('');
-
-    self.borderRadiusBuilder = ko.computed(function(): string {
-        let topLeft: string = self.radiusTopLeft() + 'px ';
-        let topRight: string = self.radiusTopRight() + 'px ';
-        let bottomRight: string = self.radiusBottomRight() + 'px ';
-        let bottomLeft: string = self.radiusBottomLeft() + 'px';
-        
-        let borderRadiusString: string = '';
-        
-        borderRadiusString += topLeft;
-        borderRadiusString += topRight;
-        borderRadiusString += bottomRight;
-        borderRadiusString += bottomLeft;
-        
-        self.borderRadius(borderRadiusString);
-        
-    	return createVendorPrefixes(borderRadiusString, 'border-radius');
-    });
+interface appViewModel {
+    panels: KnockoutObservable<any>;
+    activeTab: KnockoutObservable<Object>;
+    changeActiveTab: Function;
 }
 
-let rgbToHexViewModel = function(): void {
-    const self = this;
+class appViewModel {
+    constructor() {
+        this.panels = ko.observable({
+            "box-shadow": new boxShadowViewModel(),
+            "border-radius": new borderRadiusViewModel(),
+            "rgb-to-hex": new rgbToHexViewModel()
+        });
 
-    self.activeInputHex = null;
-    
-    self.hexColor = ko.observable('').extend({ rateLimit: 100 });
-    self.hexColor.subscribe(function(newValue: string) {
-        let hexLength: number = newValue.replace('#', '').length;
-        
-        if ( (hexLength === 3 || hexLength === 6) && self.activeInputHex ) {
-            self.hexConvert(newValue);
-        }
-        
-        // TODO: Handle edge cases with this feature.
-        self.activeInputHex = true;
-    });
-    
-    self.rgbColor = ko.observable('').extend({ rateLimit: 100 });
-    self.rgbColor.subscribe(function(newValue: string) {
-        let rgbTemp: string[] = newValue.replace('(', '').replace(')', '').split(',');
-        let rgbLength: number = rgbTemp.length;
-        
-        if ( rgbLength === 3 && !self.activeInputHex ) {
-            self.rgbConvert(rgbTemp);
-        }
-        
-        self.activeInputHex = false;
-    });
-    
-    self.rgbConvert = function(rgbArray: any): void {
-        let rgbString: string = rgbToHex(parseInt(rgbArray[0]), parseInt(rgbArray[1]), parseInt(rgbArray[2]));
-        
-        self.hexColor(rgbString);
-    };
-    
-    self.hexConvert = function(hexColor: string): void {
-        let rgbArray: ColorArray = hexToRgb(hexColor);
-        let rgbFormatted: any = [
-            rgbArray.b,
-            rgbArray.g,
-            rgbArray.r
-        ];
-        let rgbString: string = '(' + rgbFormatted.join(', ') + ')';
-        
-        self.rgbColor(rgbString);
-    };
-};
+        // Set default to box-shadow
+        this.activeTab = ko.observable({
+            name: 'box-shadow',
+            data: ko.observable(this.panels()['box-shadow'])
+        });
 
+        this.changeActiveTab = function(name: string): void {
+            console.log(name);
+            this.activeTab().name = name;
+            this.activeTab().data(this.panels()[name]);
+
+            console.log(this.activeTab());
+        }
+    }    
+}
+
+
+// =============================================================================
+// BOX SHADOW VIEWMODEL
+// =============================================================================
+interface boxShadowViewModel {
+    horizontalLength: KnockoutObservable<Number>;
+    verticalLength: KnockoutObservable<Number>;
+    blurRadius: KnockoutObservable<Number>;
+    spreadRadius: KnockoutObservable<Number>;
+    shadowColor: KnockoutObservable<String>;
+    colorType: KnockoutObservable<String>;
+    boxShadow: KnockoutObservable<String>;
+    backgroundColor: KnockoutObservable<String>;
+    boxColor: KnockoutObservable<String>;
+    opacity: KnockoutObservable<Number>;
+    outlineOrInset: KnockoutObservable<String>;
+    colorBuilder: KnockoutComputed<String>;
+    boxShadowBuilder: KnockoutComputed<String>;
+}
+
+class boxShadowViewModel {
+    constructor() {
+        this.horizontalLength = ko.observable(10);
+        this.verticalLength = ko.observable(10);
+        this.blurRadius = ko.observable(5);
+        this.spreadRadius = ko.observable(0);
+
+        this.shadowColor = ko.observable('#000000');
+        this.colorType = ko.observable('HEX');
+        this.boxShadow = ko.observable('');
+
+        this.backgroundColor = ko.observable('#f7f7f7');
+        this.boxColor = ko.observable('#f5f5f5');
+
+        this.opacity = ko.observable(0.75);
+        this.outlineOrInset = ko.observable('outline');
+
+        this.colorBuilder = ko.computed(() => {
+            if (this.colorType() === 'HEX') {
+                return this.shadowColor();
+            } else if (this.colorType() === 'RGBA') {
+                return this.shadowColor().slice(-1) + ', ' + this.opacity() + ')';
+            } else {
+                return this.shadowColor();
+            }
+        });
+
+        this.boxShadowBuilder = ko.computed(() => {
+            let horizontalLength: string = this.horizontalLength() + 'px ';
+            let verticalLength: string = this.verticalLength() + 'px ';
+            let blurRadius: string = this.blurRadius() + 'px ';
+            let spreadRadius: string = this.spreadRadius() + 'px ';
+            let colorBuilderString: String = this.colorBuilder();
+            let boxShadowString: string = '';
+            
+            // Example string: '-18px 10px 5px 0px #000000'
+            boxShadowString += horizontalLength;
+            boxShadowString += verticalLength;
+            boxShadowString += blurRadius;
+            boxShadowString += spreadRadius;
+            boxShadowString += colorBuilderString;
+            
+            // This is responsible for setting the box-shadow inline style
+            this.boxShadow(boxShadowString);
+            
+            return createVendorPrefixes(boxShadowString, 'box-shadow');
+        });
+    }    
+}
+
+
+// =============================================================================
+// BORDER RADIUS VIEWMODEL
+// =============================================================================
+interface borderRadiusViewModel {
+    radiusAll: KnockoutObservable<Number>;
+    radiusTopLeft: KnockoutObservable<Number>;
+    radiusTopRight: KnockoutObservable<Number>;
+    radiusBottomRight: KnockoutObservable<Number>;
+    radiusBottomLeft: KnockoutObservable<Number>;
+    boxColor: KnockoutObservable<String>;
+    borderColor: KnockoutObservable<String>;
+    borderRadius: KnockoutObservable<String>;
+    borderRadiusBuilder: KnockoutComputed<String>;
+}
+
+class borderRadiusViewModel {
+    constructor() {
+        this.radiusAll = ko.observable(50);
+        this.radiusTopLeft = ko.observable(50);
+        this.radiusTopRight = ko.observable(50);
+        this.radiusBottomRight = ko.observable(50);
+        this.radiusBottomLeft = ko.observable(50);
+
+        this.radiusAll.subscribe(() => {
+            // Set all radius to follow the all value
+            this.radiusTopLeft(this.radiusAll());
+            this.radiusTopRight(this.radiusAll());
+            this.radiusBottomRight(this.radiusAll());
+            this.radiusBottomLeft(this.radiusAll());
+        });
+
+        this.boxColor = ko.observable('#f5f5f5');
+        this.borderColor = ko.observable('#cccccc');
+        this.borderRadius = ko.observable('');
+
+        this.borderRadiusBuilder = ko.computed(() => {
+            let topLeft: string = this.radiusTopLeft() + 'px ';
+            let topRight: string = this.radiusTopRight() + 'px ';
+            let bottomRight: string = this.radiusBottomRight() + 'px ';
+            let bottomLeft: string = this.radiusBottomLeft() + 'px';
+            
+            let borderRadiusString: string = '';
+            
+            borderRadiusString += topLeft;
+            borderRadiusString += topRight;
+            borderRadiusString += bottomRight;
+            borderRadiusString += bottomLeft;
+            
+            this.borderRadius(borderRadiusString);
+            
+            return createVendorPrefixes(borderRadiusString, 'border-radius');
+        });
+    }
+}
+
+
+// =============================================================================
+// RGB TO HEX VIEWMODEL
+// =============================================================================
+interface rgbToHexViewModel {
+    activeInputHex: string;
+    meal: KnockoutObservable<string>;
+    hexColor: KnockoutObservable<string>;
+    rgbColor: KnockoutObservable<string>;
+    rgbConvert: Function;
+    hexConvert: Function;
+}
+
+class rgbToHexViewModel {
+    constructor() {
+        this.activeInputHex = null;
+        
+        this.hexColor = ko.observable('').extend({ rateLimit: 100 });
+        this.hexColor.subscribe(function(newValue: string) {
+            let hexLength: number = newValue.replace('#', '').length;
+            
+            if ( (hexLength === 3 || hexLength === 6) && this.activeInputHex ) {
+                this.hexConvert(newValue);
+            }
+            
+            // TODO: Handle edge cases with this feature.
+            this.activeInputHex = true;
+        });
+        
+        this.rgbColor = ko.observable('').extend({ rateLimit: 100 });
+        this.rgbColor.subscribe(function(newValue: string) {
+            let rgbTemp: string[] = newValue.replace('(', '').replace(')', '').split(',');
+            let rgbLength: number = rgbTemp.length;
+            
+            if ( rgbLength === 3 && !this.activeInputHex ) {
+                this.rgbConvert(rgbTemp);
+            }
+            
+            this.activeInputHex = false;
+        });
+        
+        this.rgbConvert = function(rgbArray: any): void {
+            let rgbString: string = rgbToHex(parseInt(rgbArray[0]), parseInt(rgbArray[1]), parseInt(rgbArray[2]));
+            
+            this.hexColor(rgbString);
+        };
+        
+        this.hexConvert = function(hexColor: string): void {
+            let rgbArray: ColorArray = hexToRgb(hexColor);
+            let rgbFormatted: any = [
+                rgbArray.b,
+                rgbArray.g,
+                rgbArray.r
+            ];
+            let rgbString: string = '(' + rgbFormatted.join(', ') + ')';
+            
+            this.rgbColor(rgbString);
+        };
+    }
+}
+
+// =============================================================================
+// INITIATE FUNCTION
+// =============================================================================
 $(function() {
-    const viewModel: void = new appViewModel();
+    const viewModel = new appViewModel();
     ko.applyBindings(viewModel);
 });

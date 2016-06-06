@@ -12,6 +12,7 @@ var ext_replace = require('gulp-ext-replace');
 var pngquant = require('imagemin-pngquant');
 var sourcemaps = require('gulp-sourcemaps');
 var typescript = require('gulp-typescript');
+var tslint = require('gulp-tslint');
 
 var isDebugEnabled = true;
 
@@ -28,22 +29,26 @@ gulp.task('styles', function () {
     .pipe(notify("SCSS task finished"));
 });
 
-gulp.task('scripts', function() {
+gulp.task('typescript', ['scripts'], function() {
   return gulp.src(['scripts/*.ts'])
-    .pipe(sourcemaps.init())
     .pipe(typescript({
-      noImplicitAny: false,
-      out: 'output.js'
+      noImplicitAny: true,
+      outFile: 'main.js'
     }))
-    .pipe(gulp.dest('scripts'))
+    .pipe(gulp.dest('scripts'));
+});
+
+gulp.task('scripts', function() {
+  var tsResult = gulp.src(['scripts/*.js', '!scripts/*.min.js'])
+    .pipe(sourcemaps.init())
     .pipe(gulpif(isDebugEnabled, debug({ title: 'JS |' })))
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     .pipe(uglify())
     .pipe(ext_replace('.min.js'))
-    .pipe(sourcemaps.write(''))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('scripts'))
-    .pipe(notify("JS task finished"));
+    .pipe(notify("JS task finished"))    
 })
 
 gulp.task('images', function() {
@@ -57,7 +62,7 @@ gulp.task('images', function() {
 
 gulp.task('watch', function () {
   gulp.watch('styles/*.scss', ['styles']);
-  gulp.watch('scripts/*.ts', ['scripts']);
+  gulp.watch('scripts/*.ts', ['typescript']);
 });
 
 gulp.task('default', ['watch']);
