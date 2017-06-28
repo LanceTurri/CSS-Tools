@@ -1,9 +1,14 @@
 {
-    "files": [
-        "scripts/main.ts"
-    ],
     "compilerOptions": {
         "noImplicitAny": true,
-        "target": "es5"
+        "target": "es5",
+        "allowSyntheticDefaultImports": true,
+        "module": "es2015",
+        "moduleResolution": "node",
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.promise"
+        ]
     }
 }

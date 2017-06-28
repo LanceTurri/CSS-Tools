@@ -3,167 +3,99 @@
 <head>
     <title>CSS Tools</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-touch-icon-120x120.png">
-    <link rel="icon" type="image/png" href="favicon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="favicon/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="favicon/manifest.json">
-    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="favicon/favicon.ico">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="favicon/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
     <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
-<body>
 
-<div class="navbar-fixed">
-    <nav>
-        <div class="nav-wrapper">
-            <ul class="right hide-on-sm-and-down">
-                <li><a href="#box-shadow" data-bind="click: changeActiveTab.bind($data, 'box-shadow'), css: activeTab()['name'] === 'box-shadow' ? 'selected' : ''">Box-Shadow</a></li>
-                <li><a href="#border-radius" data-bind="click: changeActiveTab.bind($data, 'border-radius')">Border-radius</a></li>
-                <li><a href="#rgb-to-hex" data-bind="click: changeActiveTab.bind($data, 'rgb-to-hex')">RGB to HEX</a></li>
-                <!--<li><a href="#gradient" data-bind="click: changeActiveTab.bind($data, 'gradient')">Gradient</a></li>-->
-                <!--<li><a href="#triangles" data-bind="click: changeActiveTab.bind($data, 'triangles')">Triangles</a></li>-->
+<body class="flex-column">
+
+    <header class="header" role="banner">
+        <h1 class="page-title">CSS</h1>
+    </header>
+
+    <main id="app" class="content flex-row">
+        <nav class="sidebar">
+            <ul class="sidebar-list">
+                <li class="sidebar-item" @click="activeTab = 'box-shadow'" :class="{ active: activeTab === 'boxShadow' }"><span class="sidebar-icon icon-layers"></span></li>
+                <li class="sidebar-item" @click="activeTab = 'border-radius'" :class="{ active: activeTab === 'borderRadius' }"><span class="sidebar-icon icon-vector"></span></li>
             </ul>
-        </div>
-    </nav>
-</div>
+        </nav>
 
-<div class="content">
-    <section class="box-content row" data-bind="template: { name: activeTab()['name'], data: activeTab()['data'] }"></section>
+        <component v-bind:is="activeTab"></component>
+    </main>
 
-    <script type="text/html" id="box-shadow">
-        <div class="box-shadow col s8 offset-s2 l4 offset-l4" data-bind="style: { 'box-shadow': boxShadow, 'background-color': boxColor }">
 
-            <!--<div class="btn-group" data-toggle="buttons">
-                <label class="btn">
-                    <input type="radio" name="colorType" value="HEX" data-bind="checked: colorType" /> HEX
-                </label>
-                <label class="btn">
-                    <input type="radio" name="colorType" value="RGB" data-bind="checked: colorType" /> RGB
-                </label>
-                <label class="btn">
-                    <input type="radio" name="colorType" value="RGBA" data-bind="checked: colorType" /> RGBA
-                </label>
-            </div>-->
+    <script type="text/x-template" id="box-shadow">
+        <section class="container">
+            <aside class="editor">
+                <div class="input-group">
+                    <label class="label-full-width">Horizontal Length</label>
+                    <input class="slider" type="range" v-model="horizontalLength" min="-100" max="100" />
+                </div>
 
-            <pre class="language-css" data-bind="text: boxShadowBuilder()"></pre>
+                <div class="input-group">                
+                    <label class="label-full-width">Vertical Length</label>
+                    <input class="slider" type="range" v-model="verticalLength" min="-100" max="100" />
+                </div>
 
-            <label class="label-full-width">Horizontal Length</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: horizontalLength" min="-100" max="100" />
-            </p>
+                <div class="input-group">
+                    <label class="label-full-width">Blur Radius</label>
+                    <input class="slider" type="range" v-model="blurRadius" min="0" max="100" />
+                </div>
 
-            <label class="label-full-width">Vertical Length</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: verticalLength" min="-100" max="100" />
-            </p>
+                <div class="input-group">
+                    <label class="label-full-width">Spread Radius</label>
+                    <input class="slider" type="range" v-model="spreadRadius" min="-100" max="100" />
+                </div>
 
-            <label class="label-full-width">Blur Radius</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: blurRadius" min="0" max="100" />
-            </p>
+                <div class="input-group">
+                    <label class="label-full-width">Shadow Color</label>
+                    <input type="color" v-model="shadowColor" />
+                </div>
+            </aside>
 
-            <label class="label-full-width">Spread Radius</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: spreadRadius" min="-100" max="100" />
-            </p>
+            <div class="result">
+                <box-shadow-result :boxShadow="boxShadow" :boxColor="boxColor" :boxShadowBuilder="boxShadowBuilder"></box-shadow-result>
+            </div>
+        </section>
+    </script>
 
-            <!--<label class="label-full-width">Opacity</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: opacity, enabled: colorType() === 'RGBA'" min="0" max="1" step="0.01" />
-            </p>-->
-
-            <label class="label-full-width">Shadow Color</label>
-            <input type="color" data-bind="value: shadowColor" />
-
-            <!--<label class="label-full-width">Background Color</label>
-            <input type="color" data-bind="value: backgroundColor" />
-
-            <label class="label-full-width">Box Color</label>
-            <input type="color" data-bind="value: boxColor" />-->
+    <script type="text/x-template" id="box-shadow-result">
+        <div class="box-shadow" v-bind:style="{ 'box-shadow': boxShadow, 'background-color': boxColor }">
+            <pre class="language-css">{{ boxShadowBuilder }}</pre>
         </div>
     </script>
 
-    <script type="text/html" id="border-radius">
-        <div class="border-radius col s8 offset-s2 l4 offset-l4" data-bind="style: { 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor }">
+    
 
-            <pre class="language-css" data-bind="text: borderRadiusBuilder"></pre>
+    <script type="text/x-template" id="border-radius">
+        <div class="border-radius" v-bind:style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor }">
+
+            <pre class="language-css">{{ borderRadiusBuilder }}</pre>
             
             <label>Radius All Corners</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: radiusAll" min="0" max="100" />
-            </p>
+            <input type="range" v-model="radiusAll" min="0" max="100" />
 
             <label>Radius Top Left</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: radiusTopLeft" min="0" max="100" />
-            </p>
+            <input type="range" v-model="radiusTopLeft" min="0" max="100" />
 
             <label>Radius Top Right</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: radiusTopRight" min="0" max="100" />
-            </p>
+            <input type="range" v-model="radiusTopRight" min="0" max="100" />
 
             <label>Radius Bottom Right</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: radiusBottomRight" min="0" max="100" />
-            </p>
+            <input type="range" v-model="radiusBottomRight" min="0" max="100" />
 
             <label>Radius Bottom Left</label>
-            <p class="range-field">
-                <input type="range" data-bind="textInput: radiusBottomLeft" min="0" max="100" />
-            </p>
+            <input type="range" v-model="radiusBottomLeft" min="0" max="100" />
 
             <label>Border Color</label>
-            <input type="color" data-bind="value: borderColor" />
-
-            <!--<label>Background Color</label>
-            <input type="color" data-bind="value: boxColor" />-->
+            <input type="color" v-model="borderColor" />
         </div>
     </script>
 
-    <script type="text/html" id="rgb-to-hex">
-        <div class="col s4 offset-s4">
-            <div class="row">
-                <div class="input-field s 12">
-                    <label class="active align-left">RGB Color</label>
-                    <input type="text" class="ui-input" data-bind="textInput: rgbColor" placeholder="(0, 0, 0)" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="input-field s 12">
-                    <label class="active align-left">HEX Color</label>
-                    <input type="text" class="ui-input" data-bind="textInput: hexColor" placeholder="#333 or #333333" />
-                </div>
-            </div>
-        </div>
-    </script>
-    
-    <!--<script type="text/html" id="gradient">
-        Gradient goes here
-    </script>-->
-
-    <!--<script type="text/html" id=triangles>
-        Triangles go here
-    </script>-->
-</div>
-
-<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-<script src="scripts/main.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="scripts/app.min.js"></script>
 
 </body>
 </html>

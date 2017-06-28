@@ -2,73 +2,156 @@
 // IMPORTS
 // ==================================================
 @import '_prism.scss';
+@import '_range.scss';
+
+// ==================================================
+// NORMALIZE
+// ==================================================
+html,
+body {
+    margin: 0;
+}
+
+// TODO: Normalize?
+
+// Globals
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+// ==================================================
+// VARIABLES
+// ==================================================
+$primary: #8e44ad;
+$accent: #8e44ad;
+$base-gray: #999999;
+
+$gray-darken-1: darken($base-gray, 5%);
+$gray-darken-3: darken($base-gray, 15%);
+$gray-darken-4: darken($base-gray, 35%);
+$gray-darken-5: darken($base-gray, 50%);
+
+$gray-lighten-1: lighten($base-gray, 5%);
+$gray-lighten-3: lighten($base-gray, 15%);
+$gray-lighten-4: lighten($base-gray, 35%);
+$gray-lighten-5: lighten($base-gray, 50%);
+
+
+// ==================================================
+// FONTS
+// ==================================================
+html,
+body {
+    font-family: Helvetica, sans-serif;
+    // TODO: find new font family here.
+}
+
+// ==================================================
+// UTILITY STYLES
+// ==================================================
+.flex-row {
+    display: flex;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
 
 
 // ==================================================
 // GLOBAL STYLES
 // ==================================================
-body {
-    background: #e5e5e5;
+.header {
+    background-color: $accent;
+    color: $gray-lighten-5;
+
+    .page-title {
+        background: transparentize($accent, 0.7) / fade-out($accent, 0.7);
+        font-size: 16px;
+        font-weight: 400;
+        margin: 0;
+        padding: 15px;
+        min-width: 250px;
+        text-align: center;
+        width: 30%;
+    }
 }
+
+// Main app wrapper needs to fill up remaining height.
 .content {
-    .box-content {
-    	color: #333333;
-    	margin: 50px 0;
+    flex-grow: 2;
+}
 
-    	p {
-            margin: 10px 0;
-    		text-align: center;
-    	}
+// Left side navigation menu
+.sidebar {
+    background: $gray-darken-5;
+
+    .sidebar-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
-    .box-shadow {
-    	padding: 30px;
+    .sidebar-item {
+        border-bottom: 1px solid $gray-darken-3;
+        color: $gray-lighten-5;
+        cursor: pointer;
+
+        &:hover .sidebar-icon {
+            color: $primary;
+        }
+
+        &.active .sidebar-icon {
+            border-left-color: $primary;
+        }
+
     }
 
-    .border-radius {
-        border: 1px solid #333333;
-    	padding: 30px;
-    }
-}
-
-
-// UTILITY STYLES
-// ==================================================
-.clearfix {
-    &:before,
-    &:after {
-        content: '';
-        display: table;
-    }
-
-    &:after {
-        clear: both;
+    .sidebar-icon {
+        border-left: 2px solid transparent;
+        border-right: 2px solid transparent;
+        display: inline-block;
+        padding: 20px;
     }
 }
 
-.input-invisible {
-	background: transparent;
-	border: none;
-	float: right;
-	text-align: right;
+// Wrapper for the editor and result views.
+.container {
+    display: flex;
+    flex-grow: 1;
 
-	&:focus {
-		outline: none;
-	}
 }
 
-.align-left {
-    left: 0 !important;
+.editor {
+    background-color: $gray-darken-4;
+    color: $gray-lighten-5;
+    flex-grow: 0;
+    padding: 15px;
+    width: 300px;
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .label-full-width {
+        font-size: 11px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        display: block;
+    }
 }
 
-
-// MAIN STYLES
-// ==================================================
-.btn-group {
-    text-align: center;
+.result {
+    flex-grow: 2;
+    padding: 50px;
 }
 
-.content .language-css {
-    border: 1px solid #e5e5e5;
-    margin: 30px 0;
-}

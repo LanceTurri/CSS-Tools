@@ -224,7 +224,6 @@ class borderRadiusViewModel {
 // =============================================================================
 interface rgbToHexViewModel {
     activeInputHex: string;
-    meal: KnockoutObservable<string>;
     hexColor: KnockoutObservable<string>;
     rgbColor: KnockoutObservable<string>;
     rgbConvert: Function;
