@@ -50,7 +50,6 @@ $gray-lighten-5: lighten($base-gray, 50%);
 // ==================================================
 html,
 body {
-    font-family: Helvetica, sans-serif;
     font-family: 'Pompiere', cursive;
 }
 
@@ -161,6 +160,7 @@ body {
     padding: 50px;
     
     pre {
+        background-color: transparent;
         font-family: 'Fira Mono', monospace;
     }
 

@@ -210,7 +210,6 @@ body {
 
 html,
 body {
-  font-family: Helvetica, sans-serif;
   font-family: 'Pompiere', cursive; }
 
 .flex-row {
@@ -280,6 +279,7 @@ body {
   flex-grow: 2;
   padding: 50px; }
   .result pre {
+    background-color: transparent;
     font-family: 'Fira Mono', monospace; }
   .result .result-card {
     display: flex;
