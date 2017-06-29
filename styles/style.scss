@@ -30,8 +30,8 @@ body {
 // ==================================================
 // VARIABLES
 // ==================================================
-$primary: #8e44ad;
-$accent: #8e44ad;
+$primary: #00b8d4;
+$accent: #e1f5fe;
 $base-gray: #999999;
 
 $gray-darken-1: darken($base-gray, 5%);
@@ -51,8 +51,9 @@ $gray-lighten-5: lighten($base-gray, 50%);
 html,
 body {
     font-family: Helvetica, sans-serif;
-    // TODO: find new font family here.
+    font-family: 'Pompiere', cursive;
 }
+
 
 // ==================================================
 // UTILITY STYLES
@@ -71,18 +72,14 @@ body {
 // GLOBAL STYLES
 // ==================================================
 .header {
-    background-color: $accent;
+    background-color: $primary;
     color: $gray-lighten-5;
 
     .page-title {
-        background: transparentize($accent, 0.7) / fade-out($accent, 0.7);
-        font-size: 16px;
         font-weight: 400;
         margin: 0;
-        padding: 15px;
-        min-width: 250px;
+        padding: 10px;
         text-align: center;
-        width: 30%;
     }
 }
 
@@ -107,20 +104,20 @@ body {
         cursor: pointer;
 
         &:hover .sidebar-icon {
-            color: $primary;
+            color: lighten($primary, 10%);
         }
 
         &.active .sidebar-icon {
-            border-left-color: $primary;
+            color: $primary;
         }
-
     }
 
     .sidebar-icon {
         border-left: 2px solid transparent;
         border-right: 2px solid transparent;
         display: inline-block;
-        padding: 20px;
+        font-size: 24px;
+        padding: 15px;
     }
 }
 
@@ -135,17 +132,26 @@ body {
     background-color: $gray-darken-4;
     color: $gray-lighten-5;
     flex-grow: 0;
-    padding: 15px;
+    padding: 30px 15px;
     width: 300px;
 
     .input-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+
+        &.breakout {
+            padding-bottom: 25px;
+
+            &:not(:first-child) {
+                padding-top: 25px;
+            }
+        }
     }
 
     .label-full-width {
-        font-size: 11px;
+        font-size: 14px;
+        letter-spacing: 1px;
         text-transform: uppercase;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         display: block;
     }
 }
@@ -153,5 +159,20 @@ body {
 .result {
     flex-grow: 2;
     padding: 50px;
+    
+    pre {
+        font-family: 'Fira Mono', monospace;
+    }
+
+    .result-card {
+        display: flex;
+        width: 550px;
+        margin: 0 auto;
+        justify-content: center;
+
+        &.border-radius {
+            border: 3px solid $primary;
+        }
+    }
 }
 

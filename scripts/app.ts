@@ -60,6 +60,32 @@ function createVendorPrefixes(cssString: string, cssPropertyName: string, prefix
 }
 
 // =============================================================================
+// TAB VIEWMODELS
+// =============================================================================
+const tabViewModel = {
+    template: '#tab',
+    props: [
+        'activeTab',
+        'tabName',
+        'iconClass',
+    ],
+    computed: {
+        amActive() {
+            if (this.tabName === this.activeTab) {
+                return true;
+            }
+
+            return false;
+        },
+    },
+    methods: {
+        changeTab() {
+            this.$emit('changetab');
+        },
+    },
+};
+
+// =============================================================================
 // BOX SHADOW VIEWMODEL
 // =============================================================================
 const boxShadowResultViewModel = {
@@ -130,6 +156,16 @@ const boxShadowViewModel = {
 // =============================================================================
 // BORDER RADIUS VIEWMODEL
 // =============================================================================
+const borderRadiusResultViewModel = {
+    template: '#border-radius-result',
+    props: [
+        'borderRadius',
+        'boxColor',
+        'borderColor',
+        'borderRadiusBuilder',
+    ],
+};
+
 const borderRadiusViewModel = {
     template: '#border-radius',
     data: () => {
@@ -140,7 +176,7 @@ const borderRadiusViewModel = {
             radiusBottomRight: 50,
             radiusBottomLeft: 50,
             boxColor: '#f5f5f5',
-            borderColor: '#cccccc',
+            borderColor: '#00b8d4',
             borderRadius: '',
         };
     },
@@ -172,58 +208,66 @@ const borderRadiusViewModel = {
             this.radiusBottomLeft = this.radiusAll;
         },
     },
+    components: {
+        borderRadiusResult: borderRadiusResultViewModel,
+    },
 };
 
 // =============================================================================
 // RGB TO HEX VIEWMODEL
 // =============================================================================
-// class rgbToHexViewModel {
-//     constructor() {
-//         this.activeInputHex = null;
+const rgbToHexViewModel = {
+    data: () => {
+        return {
+            activeInputHex: false,
+            hexColor: '',
+            rgbColor: '',
+        };
+    },
+    watch: {
+        hexColor: (newValue: string) => {
+            const hexLength: number = newValue.replace('#', '').length;
 
-//         this.hexColor = ko.observable('').extend({ rateLimit: 100 });
-//         this.hexColor.subscribe(function(newValue: string) {
-//             let hexLength: number = newValue.replace('#', '').length;
+            if ( (hexLength === 3 || hexLength === 6) && this.activeInputHex ) {
+                this.hexConvert(newValue);
+            }
 
-//             if ( (hexLength === 3 || hexLength === 6) && this.activeInputHex ) {
-//                 this.hexConvert(newValue);
-//             }
+            // TODO: Handle edge cases with this feature.
+            this.activeInputHex = true;
+        },
+        rgbColor: (newValue: string) => {
+            const rgbTemp: string[] = newValue.replace('(', '').replace(')', '').split(',');
+            const rgbLength: number = rgbTemp.length;
 
-//             // TODO: Handle edge cases with this feature.
-//             this.activeInputHex = true;
-//         });
+            if ( rgbLength === 3 && !this.activeInputHex ) {
+                this.rgbConvert(rgbTemp);
+            }
 
-//         this.rgbColor = ko.observable('').extend({ rateLimit: 100 });
-//         this.rgbColor.subscribe(function(newValue: string) {
-//             let rgbTemp: string[] = newValue.replace('(', '').replace(')', '').split(',');
-//             let rgbLength: number = rgbTemp.length;
+            this.activeInputHex = false;
+        },
 
-//             if ( rgbLength === 3 && !this.activeInputHex ) {
-//                 this.rgbConvert(rgbTemp);
-//             }
+    },
+    methods: {
+        rgbConvert(rgbArray: any): void {
+            const red = parseInt(rgbArray[0], 10);
+            const green = parseInt(rgbArray[1], 10);
+            const blue = parseInt(rgbArray[2], 10);
 
-//             this.activeInputHex = false;
-//         });
+            this.hexColor(rgbToHex(red, green, blue));
+        },
+        hexConvert(hexColor: string): void {
+            const rgbArray: IColorArray = hexToRgb(hexColor);
+            const rgbFormatted: any = [
+                rgbArray.b,
+                rgbArray.g,
+                rgbArray.r,
+            ];
+            const rgbString: string = '(' + rgbFormatted.join(', ') + ')';
 
-//         this.rgbConvert = function(rgbArray: any): void {
-//             let rgbString: string = rgbToHex(parseInt(rgbArray[0]), parseInt(rgbArray[1]), parseInt(rgbArray[2]));
-
-//             this.hexColor(rgbString);
-//         };
-
-//         this.hexConvert = function(hexColor: string): void {
-//             let rgbArray: ColorArray = hexToRgb(hexColor);
-//             let rgbFormatted: any = [
-//                 rgbArray.b,
-//                 rgbArray.g,
-//                 rgbArray.r
-//             ];
-//             let rgbString: string = '(' + rgbFormatted.join(', ') + ')';
-
-//             this.rgbColor(rgbString);
-//         };
-//     }
-// }
+            this.rgbColor(rgbString);
+        },
+    },
+};
 
 // =============================================================================
 // INITIATE FUNCTION
@@ -240,5 +284,6 @@ const app = new Vue({
     components: {
         boxShadow: boxShadowViewModel,
         borderRadius: borderRadiusViewModel,
+        tab: tabViewModel,
     },
 });

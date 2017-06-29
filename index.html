@@ -3,6 +3,8 @@
 <head>
     <title>CSS Tools</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Poiret+One|Pompiere" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
     <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
@@ -10,20 +12,19 @@
 <body class="flex-column">
 
     <header class="header" role="banner">
-        <h1 class="page-title">CSS</h1>
+        <h1 class="page-title">CSS Tools</h1>
     </header>
 
     <main id="app" class="content flex-row">
         <nav class="sidebar">
             <ul class="sidebar-list">
-                <li class="sidebar-item" @click="activeTab = 'box-shadow'" :class="{ active: activeTab === 'boxShadow' }"><span class="sidebar-icon icon-layers"></span></li>
-                <li class="sidebar-item" @click="activeTab = 'border-radius'" :class="{ active: activeTab === 'borderRadius' }"><span class="sidebar-icon icon-vector"></span></li>
+                <tab tab-name="box-shadow" icon-class="icon-layers" :active-tab="activeTab" v-on:changetab="activeTab = 'box-shadow'"></tab>
+                <tab tab-name="border-radius" icon-class="icon-vector" :active-tab="activeTab" v-on:changetab="activeTab = 'border-radius'"></tab>
             </ul>
         </nav>
 
         <component v-bind:is="activeTab"></component>
     </main>
-
 
     <script type="text/x-template" id="box-shadow">
         <section class="container">
@@ -61,37 +62,62 @@
     </script>
 
     <script type="text/x-template" id="box-shadow-result">
-        <div class="box-shadow" v-bind:style="{ 'box-shadow': boxShadow, 'background-color': boxColor }">
+        <div class="result-card box-shadow" v-bind:style="{ 'box-shadow': boxShadow, 'background-color': boxColor }">
             <pre class="language-css">{{ boxShadowBuilder }}</pre>
         </div>
     </script>
 
-    
-
     <script type="text/x-template" id="border-radius">
-        <div class="border-radius" v-bind:style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor }">
+        <section class="container">
+            <aside class="editor">
+                <div class="input-group breakout">
+                    <label class="label-full-width">Radius All Corners</label>
+                    <input class="slider" type="range" v-model="radiusAll" min="0" max="100" />
+                </div>
 
+                <div class="input-group">
+                    <label class="label-full-width">Radius Top Left</label>
+                    <input class="slider" type="range" v-model="radiusTopLeft" min="0" max="100" />
+                </div>
+
+                <div class="input-group">
+                    <label class="label-full-width">Radius Top Right</label>
+                    <input class="slider" type="range" v-model="radiusTopRight" min="0" max="100" />
+                </div>
+
+                <div class="input-group">
+                    <label class="label-full-width">Radius Bottom Right</label>
+                    <input class="slider" type="range" v-model="radiusBottomRight" min="0" max="100" />
+                </div>
+
+                <div class="input-group">
+                    <label class="label-full-width">Radius Bottom Left</label>
+                    <input class="slider" type="range" v-model="radiusBottomLeft" min="0" max="100" />
+                </div>
+
+                <div class="input-group">
+                    <label class="label-full-width">Border Color</label>
+                    <input class="slider" type="color" v-model="borderColor" />
+                </div>
+            </aside>
+
+            <div class="result">
+                <border-radius-result :borderRadius="borderRadius" :boxColor="boxColor" :borderColor="borderColor" :borderRadiusBuilder="borderRadiusBuilder"></border-radius-result>
+            </div>
+        </section>
+    </script>
+
+    <script type="text/x-template" id="border-radius-result">
+        <div class="result-card border-radius" v-bind:style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor }">
             <pre class="language-css">{{ borderRadiusBuilder }}</pre>
-            
-            <label>Radius All Corners</label>
-            <input type="range" v-model="radiusAll" min="0" max="100" />
-
-            <label>Radius Top Left</label>
-            <input type="range" v-model="radiusTopLeft" min="0" max="100" />
-
-            <label>Radius Top Right</label>
-            <input type="range" v-model="radiusTopRight" min="0" max="100" />
-
-            <label>Radius Bottom Right</label>
-            <input type="range" v-model="radiusBottomRight" min="0" max="100" />
-
-            <label>Radius Bottom Left</label>
-            <input type="range" v-model="radiusBottomLeft" min="0" max="100" />
-
-            <label>Border Color</label>
-            <input type="color" v-model="borderColor" />
         </div>
     </script>
+    
+    <script type="text/x-template" id="tab">
+        <li class="sidebar-item" :class="{ active: amActive }" @click="changeTab">
+            <span class="sidebar-icon" :class="iconClass"></span>
+        </li>
+    </script>    
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue"></script>
