@@ -1,0 +1,51 @@
+
+.editor {
+    background-color: $gray-darken-4;
+    color: $gray-lighten-5;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 30px 15px;
+    width: 300px;
+
+    .input-group {
+        margin-bottom: 25px;
+
+        &.breakout {
+            padding-bottom: 25px;
+
+            &:not(:first-child) {
+                padding-top: 25px;
+            }
+        }
+    }
+
+    .label-full-width {
+        font-size: 14px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        display: block;
+        width: 100%;
+    }
+
+    .templates {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+
+        .template-item {
+            cursor: pointer;
+            margin: 4% 0;
+            transition: 150ms color linear;
+            width: 33%;
+
+            &:hover {
+                color: $primary;
+            }
+
+            span {
+                margin-right: 5px;
+            }
+        }
+    }
+}

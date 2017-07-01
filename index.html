@@ -53,17 +53,85 @@
                     <label class="label-full-width">Shadow Color</label>
                     <input type="color" v-model="shadowColor" />
                 </div>
+
+                <div class="input-group breakout templates">
+                    <label class="label-full-width">Target Layout</label>
+                    <div class="template-item" @click="layout = 'single'"><span class="icon-envelope"></span>1 Card</div>
+                    <div class="template-item" @click="layout = 'multiple'"><span class="icon-grid"></span>3 Cards</div>
+                    <div class="template-item" @click="layout = 'image'"><span class="icon-picture"></span>Image</div>
+                </div>
+
+                <div class="input-group templates">
+                    <label class="label-full-width">Quick Templates</label>
+                    <div class="template-item" @click="updateShadow('simple')"><span class="icon-puzzle"></span>Simple</div>
+                    <div class="template-item" @click="updateShadow('soft')"><span class="icon-drop"></span>Soft</div>
+                    <div class="template-item" @click="updateShadow('outline')"><span class="icon-frame"></span>Outline</div>
+                </div>
             </aside>
 
-            <div class="result">
-                <box-shadow-result :boxShadow="boxShadow" :boxColor="boxColor" :boxShadowBuilder="boxShadowBuilder"></box-shadow-result>
-            </div>
+            <box-shadow-result :boxShadow="boxShadow" :boxColor="boxColor" :boxShadowBuilder="boxShadowBuilder" :layout="layout"></box-shadow-result>
         </section>
     </script>
 
     <script type="text/x-template" id="box-shadow-result">
-        <div class="result-card box-shadow" v-bind:style="{ 'box-shadow': boxShadow, 'background-color': boxColor }">
-            <pre class="language-css">{{ boxShadowBuilder }}</pre>
+        <div class="result">
+            <div class="multiple-cards full" v-show="layout === 'multiple'">
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+                    <div class="card-header mountain">
+                        <div class="card-title">A Winter's Tale</div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <pre class="language-css">{{ boxShadowBuilder }}</pre>
+                    </div>
+                </div>
+
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow }">
+                    <div class="card-header desert">
+                        <div class="card-title">Desert Adventure</div>
+                    </div>
+                    
+                    <div class="card-content">
+                        Sometimes you just need to get away and explore.
+                    </div>
+                </div>
+
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow }">
+                    <div class="card-header beach">
+                        <div class="card-title">Birds Eye View</div>
+                    </div>
+                    
+                    <div class="card-content">
+                        A flight to remember.
+                    </div>
+                </div>
+            </div>
+
+            <div class="single-card full" v-show="layout === 'single'">
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+                    <div class="card-header mountain">
+                        <div class="card-title">A Winter's Tale</div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <pre class="language-css">{{ boxShadowBuilder }}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image full" v-show="layout === 'image'">
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+                    <div class="card-header jewels">
+                        <div class="card-title">Jewels</div>
+                    </div>
+                </div>
+
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+                    <div class="card-header road">
+                        <div class="card-title">On the road again</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
 
@@ -108,8 +176,18 @@
     </script>
 
     <script type="text/x-template" id="border-radius-result">
-        <div class="result-card border-radius" v-bind:style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor }">
-            <pre class="language-css">{{ borderRadiusBuilder }}</pre>
+        <div class="result">
+            <div class="single-card full border-radius">
+                <div class="card full-width" :style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor }">
+                    <div class="card-header mountain">
+                        <div class="card-title">A Winter's Tale</div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <pre class="language-css">{{ borderRadiusBuilder }}</pre>
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
     

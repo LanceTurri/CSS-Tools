@@ -13,11 +13,10 @@ var isDebugEnabled = true;
 
 gulp.task('styles', function () {
   return gulp.src('styles/*.scss')
-    .pipe(sass())
+    .pipe(sourcemaps.init())
+    .pipe(sass()).on('error', sass.logError)
+    .pipe(sourcemaps.write('./'))
     .pipe(debug({ title: 'CSS |' }))
-    .on("error", notify.onError(function (error) {
-      return "File: " + error.message;
-    }))
     .pipe(gulp.dest('styles'))
     .pipe(notify("SCSS task finished"));
 });

@@ -1,0 +1,33 @@
+// Left side navigation menu
+.sidebar {
+    background: $gray-darken-5;
+
+    .sidebar-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sidebar-item {
+        border-bottom: 1px solid $gray-darken-3;
+        color: $gray-lighten-5;
+        cursor: pointer;
+
+        &:hover .sidebar-icon {
+            color: lighten($primary, 10%);
+        }
+
+        &.active .sidebar-icon {
+            color: $primary;
+        }
+    }
+
+    .sidebar-icon {
+        border-left: 2px solid transparent;
+        border-right: 2px solid transparent;
+        display: inline-block;
+        font-size: 24px;
+        padding: 15px;
+        transition: 150ms color linear;
+    }
+}

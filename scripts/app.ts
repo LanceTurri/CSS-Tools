@@ -9,6 +9,13 @@ interface IColorArray {
     b: number;
 }
 
+interface IShadowTemplate {
+    horizontalLength: number;
+    verticalLength: number;
+    blurRadius: number;
+    spreadRadius: number;
+}
+
 const hexToRgb = (hex: string): IColorArray => {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
     const shorthandRegex: RegExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -94,7 +101,29 @@ const boxShadowResultViewModel = {
         'boxShadow',
         'boxColor',
         'boxShadowBuilder',
+        'layout',
     ],
+};
+
+const shadowTemplates = {
+    simple: {
+        horizontalLength: 10,
+        verticalLength: 10,
+        blurRadius: 20,
+        spreadRadius: 0,
+    },
+    soft: {
+        horizontalLength: 10,
+        verticalLength: 10,
+        blurRadius: 80,
+        spreadRadius: -10,
+    },
+    outline: {
+        horizontalLength: 5,
+        verticalLength: 5,
+        blurRadius: 5,
+        spreadRadius: 0,
+    },
 };
 
 const boxShadowViewModel = {
@@ -103,15 +132,16 @@ const boxShadowViewModel = {
         return {
             horizontalLength: 10,
             verticalLength: 10,
-            blurRadius: 5,
-            spreadRadius: 0,
-            shadowColor: '#000000',
+            blurRadius: 80,
+            spreadRadius: -10,
+            shadowColor: '#999999',
             colorType: 'HEX',
             boxShadow: '',
             backgroundColor: '#f7f7f7',
             boxColor: '#f5f5f5',
             opacity: 0.75,
             outlineOrInset: 'outline',
+            layout: 'multiple',
         };
     },
     computed: {
@@ -150,6 +180,32 @@ const boxShadowViewModel = {
     },
     components: {
         boxShadowResult: boxShadowResultViewModel,
+    },
+    methods: {
+        updateShadow(template: string) {
+            switch (template) {
+                case 'simple':
+                    this.updateShadowData(shadowTemplates.simple);
+                    break;
+
+                case 'soft':
+                    this.updateShadowData(shadowTemplates.soft);
+                    break;
+
+                case 'outline':
+                    this.updateShadowData(shadowTemplates.outline);
+                    break;
+
+                default:
+                    throw new Error('The shadow template provided does not match a preset available.');
+            }
+        },
+        updateShadowData(data: IShadowTemplate) {
+            this.horizontalLength = data.horizontalLength;
+            this.verticalLength = data.verticalLength;
+            this.blurRadius = data.blurRadius;
+            this.spreadRadius = data.spreadRadius;
+        },
     },
 };
 

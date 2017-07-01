@@ -1,0 +1,105 @@
+
+.result {
+    background-color: #F8F9FD;
+    padding: 50px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+	width: 100%;
+
+    .full {
+        width: 100%;
+    }
+    
+    .card {
+        border-radius: 5px;
+        margin: 4%;
+        transition: 100ms box-shadow linear;
+
+		&:first-child {
+			margin-top: 0;
+		}
+
+        &.full-width {
+            width: 92%;
+        }
+
+        &.half-width { 
+            width: 42%;
+        }
+
+        .card-header {
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            height: 220px;
+            padding: 20px 40px;
+        }
+
+        .card-title {
+            align-self: flex-end;
+            color: #f5f5f5;
+            font-size: 24px;
+        }
+
+        .card-content {
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 0 0 5px 5px;
+            display: flex;
+            font-size: 18px;
+            min-height: 100px;
+            padding: 20px 40px;
+
+			pre {
+				background-color: transparent;
+				font-family: 'Fira Mono', monospace;
+				font-size: 15px;
+			}
+        }
+    }
+
+	// Modifiers for individual layouts
+	.image .card .card-header {
+        border-radius: 5px;
+    }
+
+    .multiple-cards {
+		align-content: flex-start;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+	.border-radius {
+		border: 3px solid $primary;
+	}
+
+    .mountain {
+        background-image: url('https://images.unsplash.com/photo-1477209560495-270790f2251a?dpr=1&auto=compress,format&fit=crop&w=767&h=512&q=80&cs=tinysrgb&crop=&bg=');
+        background-position: center center;
+        background-size: cover;
+    }
+
+    .beach {
+        background-image: url('https://images.unsplash.com/photo-1494005199821-2cb74a8e75fb?dpr=1&auto=compress,format&fit=crop&w=767&h=511&q=80&cs=tinysrgb&crop=&bg=');
+        background-position: center center;
+        background-size: cover;
+    }
+
+    .desert {
+        background-image: url('https://images.unsplash.com/photo-1462496591979-5ba58a2ddec6?dpr=1&auto=compress,format&fit=crop&w=767&h=511&q=80&cs=tinysrgb&crop=&bg=');
+        background-position: center center;
+        background-size: cover;
+    }
+    
+    .jewels {
+        background-image: url('https://images.unsplash.com/photo-1450297166380-cabe503887e5?dpr=1&auto=compress,format&fit=crop&w=767&h=515&q=80&cs=tinysrgb&crop=&bg=');
+        background-position: center center;
+        background-size: cover;
+    }
+    
+    .road {
+        background-image: url('https://images.unsplash.com/photo-1474496517593-015d8b59450d?dpr=1&auto=compress,format&fit=crop&w=767&h=512&q=80&cs=tinysrgb&crop=&bg=');
+        background-position: center center;
+        background-size: cover;
+    }    
+}

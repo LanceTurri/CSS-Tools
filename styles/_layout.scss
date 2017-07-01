@@ -1,0 +1,23 @@
+.header {
+    background-color: $primary;
+    color: $gray-lighten-5;
+
+    .page-title {
+        font-weight: 400;
+        margin: 0;
+        padding: 10px;
+        text-align: center;
+    }
+}
+
+// Main app wrapper needs to fill up remaining height.
+.content {
+    flex-grow: 2;
+}
+
+// Wrapper for the editor and result views.
+.container {
+    display: flex;
+    flex-grow: 1;
+
+}
