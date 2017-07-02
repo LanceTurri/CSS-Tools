@@ -1,18 +1,16 @@
-'use strict';
+const gulp = require('gulp');
+const debug = require('gulp-debug')
+const sass = require('gulp-sass');
+const notify = require('gulp-notify');
+const uglify = require('gulp-uglify');
+const ext_replace = require('gulp-ext-replace');
+const sourcemaps = require('gulp-sourcemaps');
 
-var gulp = require('gulp');
-var debug = require('gulp-debug')
-var sass = require('gulp-sass');
-var notify = require('gulp-notify');
-var uglify = require('gulp-uglify');
-var ext_replace = require('gulp-ext-replace');
-var sourcemaps = require('gulp-sourcemaps');
-var typescript = require('gulp-typescript');
+const typescript = require('gulp-typescript');
+const tsProject = typescript.createProject('tsconfig.json');
 
-var isDebugEnabled = true;
-
-gulp.task('styles', function () {
-  return gulp.src('styles/*.scss')
+gulp.task('styles', () => {
+  return gulp.src('./styles/*.scss')
     .pipe(sourcemaps.init())
     .pipe(sass()).on('error', sass.logError)
     .pipe(sourcemaps.write('./'))
@@ -21,22 +19,19 @@ gulp.task('styles', function () {
     .pipe(notify("SCSS task finished"));
 });
 
-gulp.task('scripts', function() {
-  var tsResult = gulp.src(['scripts/*.ts'])
+gulp.task('scripts', () => {
+  return gulp.src(['./scripts/*.ts'])
     .pipe(sourcemaps.init())
-    .pipe(typescript({
-      noImplicitAny: true,
-      outFile: 'app.js'
-    }))
+    .pipe(tsProject())
     .pipe(debug({ title: 'JS |' }))
     .pipe(uglify())
     .pipe(ext_replace('.min.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('scripts'))
-    .pipe(notify("JS task finished"))
+    .pipe(notify("JS task finished"));
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', () => {
   gulp.watch('styles/*.scss', ['styles']);
   gulp.watch('scripts/*.ts', ['scripts']);
 });
