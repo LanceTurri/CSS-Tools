@@ -66,6 +66,7 @@
                     <div class="template-item" @click="updateShadow('simple')"><span class="icon-puzzle"></span>Simple</div>
                     <div class="template-item" @click="updateShadow('soft')"><span class="icon-drop"></span>Soft</div>
                     <div class="template-item" @click="updateShadow('outline')"><span class="icon-frame"></span>Outline</div>
+                    <div class="template-item" @click="updateShadow('floating')"><span class="icon-mustache"></span>Floating</div>
                 </div>
             </aside>
 
@@ -163,24 +164,28 @@
                     <input class="slider" type="range" v-model="radiusBottomLeft" min="0" max="100" />
                 </div>
 
+                <div class="input-group separate">
+                    <label class="label-full-width">Border Width</label>
+                    <input class="slider" type="range" v-model="borderWidth" min="0" max="20" />
+                </div>
+
                 <div class="input-group">
                     <label class="label-full-width">Border Color</label>
                     <input class="slider" type="color" v-model="borderColor" />
                 </div>
             </aside>
 
-            <div class="result">
-                <border-radius-result :borderRadius="borderRadius" :boxColor="boxColor" :borderColor="borderColor" :borderRadiusBuilder="borderRadiusBuilder"></border-radius-result>
-            </div>
+            <border-radius-result :borderRadius="borderRadius" :boxColor="boxColor" :borderColor="borderColor" :borderRadiusBuilder="borderRadiusBuilder" :borderWidth="borderWidthFormatted"></border-radius-result>
         </section>
     </script>
 
     <script type="text/x-template" id="border-radius-result">
         <div class="result">
-            <div class="single-card full border-radius">
-                <div class="card full-width" :style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor }">
+            <div class="single-card full">
+                <div class="card border-radius full-width" :style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor, 'border-width': borderWidth }">
                     <div class="card-header mountain">
                         <div class="card-title">A Winter's Tale</div>
+                        <div class="card-meta">{{ borderWidth }}</div>
                     </div>
                     
                     <div class="card-content">

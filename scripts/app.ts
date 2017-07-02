@@ -105,7 +105,7 @@ const boxShadowResultViewModel = {
     ],
 };
 
-const shadowTemplates = {
+const shadowTemplates: { [name: string]: IShadowTemplate } = {
     simple: {
         horizontalLength: 10,
         verticalLength: 10,
@@ -123,6 +123,12 @@ const shadowTemplates = {
         verticalLength: 5,
         blurRadius: 5,
         spreadRadius: 0,
+    },
+    floating: {
+        horizontalLength: 30,
+        verticalLength: 25,
+        blurRadius: 80,
+        spreadRadius: 8,
     },
 };
 
@@ -183,22 +189,8 @@ const boxShadowViewModel = {
     },
     methods: {
         updateShadow(template: string) {
-            switch (template) {
-                case 'simple':
-                    this.updateShadowData(shadowTemplates.simple);
-                    break;
-
-                case 'soft':
-                    this.updateShadowData(shadowTemplates.soft);
-                    break;
-
-                case 'outline':
-                    this.updateShadowData(shadowTemplates.outline);
-                    break;
-
-                default:
-                    throw new Error('The shadow template provided does not match a preset available.');
-            }
+            const specificTemplate: IShadowTemplate = shadowTemplates[template] as any;
+            this.updateShadowData(specificTemplate);
         },
         updateShadowData(data: IShadowTemplate) {
             this.horizontalLength = data.horizontalLength;
@@ -219,6 +211,7 @@ const borderRadiusResultViewModel = {
         'boxColor',
         'borderColor',
         'borderRadiusBuilder',
+        'borderWidth',
     ],
 };
 
@@ -234,6 +227,7 @@ const borderRadiusViewModel = {
             boxColor: '#f5f5f5',
             borderColor: '#00b8d4',
             borderRadius: '',
+            borderWidth: 3,
         };
     },
     computed: {
@@ -253,6 +247,9 @@ const borderRadiusViewModel = {
             this.borderRadius = borderRadiusString;
 
             return createVendorPrefixes(borderRadiusString, 'border-radius');
+        },
+        borderWidthFormatted() {
+            return `${this.borderWidth}px`;
         },
     },
     watch: {

@@ -63,6 +63,8 @@ body {
       padding-bottom: 25px; }
       .editor .input-group.breakout:not(:first-child) {
         padding-top: 25px; }
+    .editor .input-group.separate {
+      padding-top: 25px; }
   .editor .label-full-width {
     font-size: 14px;
     letter-spacing: 1px;
@@ -104,14 +106,14 @@ body {
     .result .card.half-width {
       width: 42%; }
     .result .card .card-header {
+      align-items: flex-end;
       border-radius: 5px 5px 0 0;
-      display: flex;
-      height: 220px;
-      padding: 20px 40px; }
-    .result .card .card-title {
-      align-self: flex-end;
       color: #f5f5f5;
-      font-size: 24px; }
+      display: flex;
+      font-size: 24px;
+      height: 220px;
+      justify-content: space-between;
+      padding: 20px 40px; }
     .result .card .card-content {
       align-items: center;
       background-color: #ffffff;
@@ -131,7 +133,10 @@ body {
     display: flex;
     flex-wrap: wrap; }
   .result .border-radius {
-    border: 3px solid #00b8d4; }
+    border: 3px solid #00b8d4;
+    overflow: hidden; }
+    .result .border-radius .card-header {
+      border-radius: 0; }
   .result .mountain {
     background-image: url("https://images.unsplash.com/photo-1477209560495-270790f2251a?dpr=1&auto=compress,format&fit=crop&w=767&h=512&q=80&cs=tinysrgb&crop=&bg=");
     background-position: center center;
