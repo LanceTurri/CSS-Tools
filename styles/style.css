@@ -165,6 +165,9 @@ body {
   display: flex;
   flex-direction: column; }
 
+.flex-self-center {
+  align-self: center; }
+
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;

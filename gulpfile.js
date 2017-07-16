@@ -5,6 +5,7 @@ const notify = require('gulp-notify');
 const uglify = require('gulp-uglify');
 const ext_replace = require('gulp-ext-replace');
 const sourcemaps = require('gulp-sourcemaps');
+const deploy = require('gulp-gh-pages');
 
 const typescript = require('gulp-typescript');
 const tsProject = typescript.createProject('tsconfig.json');
@@ -20,7 +21,7 @@ gulp.task('styles', () => {
 });
 
 gulp.task('scripts', () => {
-  return gulp.src(['./scripts/*.ts'])
+  return gulp.src(['./scripts/**/*.ts'])
     .pipe(sourcemaps.init())
     .pipe(tsProject())
     .pipe(debug({ title: 'JS |' }))
@@ -31,7 +32,7 @@ gulp.task('scripts', () => {
     .pipe(notify("JS task finished"));
 });
 
-gulp.task('watch', () => {
+gulp.task('watch', ['styles', 'scripts'], () => {
   gulp.watch('styles/*.scss', ['styles']);
   gulp.watch('scripts/*.ts', ['scripts']);
 });

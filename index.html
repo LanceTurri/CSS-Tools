@@ -20,6 +20,7 @@
             <ul class="sidebar-list">
                 <tab tab-name="box-shadow" icon-class="icon-layers" :active-tab="activeTab" v-on:changetab="activeTab = 'box-shadow'"></tab>
                 <tab tab-name="border-radius" icon-class="icon-vector" :active-tab="activeTab" v-on:changetab="activeTab = 'border-radius'"></tab>
+                <tab tab-name="triangle" icon-class="icon-control-play" :active-tab="activeTab" v-on:changetab="activeTab = 'triangle'"></tab>
             </ul>
         </nav>
 
@@ -193,6 +194,54 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="triangle">
+        <section class="container">
+            <aside class="editor">
+                <div class="input-group">
+                    <label class="label-full-width">Triangle Height</label>
+                    <input class="slider" type="range" v-model="triangleHeight" min="0" max="200" />
+                </div>
+
+                <div class="input-group">                
+                    <label class="label-full-width">Triangle Left Side</label>
+                    <input class="slider" type="range" v-model="triangleLeft" min="0" max="200" />
+                </div>
+
+                <div class="input-group">
+                    <label class="label-full-width">Triangle Right Side</label>
+                    <input class="slider" type="range" v-model="triangleRight" min="0" max="200" />
+                </div>
+
+                <div class="input-group">
+                    <label class="label-full-width">Triangle Color</label>
+                    <input type="color" v-model="triangleColor" />
+                </div>
+
+                <!-- <div class="input-group breakout templates">
+                    <label class="label-full-width">Target Layout</label>
+                    <div class="template-item" @click="layout = 'single'"><span class="icon-envelope"></span>1 Card</div>
+                    <div class="template-item" @click="layout = 'multiple'"><span class="icon-grid"></span>3 Cards</div>
+                    <div class="template-item" @click="layout = 'image'"><span class="icon-picture"></span>Image</div>
+                </div> -->
+            </aside>
+
+            <triangle-result 
+                :triangleDirection="triangleDirection" 
+                :triangleHeight="triangleHeight" 
+                :triangleLeft="triangleLeft" 
+                :triangleRight="triangleRight"
+                :triangleColor="triangleColor"
+                :triangleBuilder="triangleBuilder"
+                :triangleStyle="triangleStyle"></triangle-result>
+        </section>
+    </script>
+
+    <script type="text/x-template" id="triangle-result">
+        <div class="result">
+            <div class="flex-self-center" :style="triangleBuilder"></div>
         </div>
     </script>
     

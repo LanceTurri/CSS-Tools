@@ -3,67 +3,56 @@ declare var Vue: any;
 // =============================================================================
 // VIEWMODEL FUNCTIONS
 // =============================================================================
-interface IColorArray {
-    r: number;
-    g: number;
-    b: number;
-}
+class Utils {
+    public hexToRgb(hex: string): IColorArray {
+        // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        const shorthandRegex: RegExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 
-interface IShadowTemplate {
-    horizontalLength: number;
-    verticalLength: number;
-    blurRadius: number;
-    spreadRadius: number;
-}
+        hex = hex.replace(shorthandRegex, (m, r, g, b): string => {
+            return r + r + g + g + b + b;
+        });
 
-const hexToRgb = (hex: string): IColorArray => {
-    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    const shorthandRegex: RegExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        const result: RegExpExecArray = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
-    hex = hex.replace(shorthandRegex, (m, r, g, b): string => {
-        return r + r + g + g + b + b;
-    });
-
-    const result: RegExpExecArray = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-    return result ? {
-        r: parseInt(result[1], 16),
-        // tslint:disable-next-line:object-literal-sort-keys
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-    } : null;
-};
-
-function rgbToHex(r: number, g: number, b: number): string {
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-
-function createVendorPrefixes(cssString: string, cssPropertyName: string, prefixArray?: string[]): string {
-    // This will build the code to be put in the <pre> element.
-    const property: string = 'box-shadow';
-    let prefixes: string[] = [
-        '-moz-' + cssPropertyName + ': ',
-        '-webkit-' + cssPropertyName + ': ',
-        cssPropertyName + ': ',
-    ];
-    const prefixesLength: number = prefixes.length;
-    let stringBuilder: string = "";
-    let i: number = 0;
-
-    if ( prefixArray ) {
-        prefixes = prefixArray;
+        return result ? {
+            r: parseInt(result[1], 16),
+            // tslint:disable-next-line:object-literal-sort-keys
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16),
+        } : null;
     }
 
-    for ( i; i < prefixesLength; i++ ) {
-        stringBuilder += prefixes[i];
-        stringBuilder += cssString + ';';
+    public rgbToHex(r: number, g: number, b: number): string {
+        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
 
-        if ( i < prefixesLength - 1 ) {
-            stringBuilder += '\n';
+    public createVendorPrefixes(cssString: string, cssPropertyName: string, prefixArray?: string[]): string {
+        // This will build the code to be put in the <pre> element.
+        const property: string = 'box-shadow';
+        let prefixes: string[] = [
+            '-moz-' + cssPropertyName + ': ',
+            '-webkit-' + cssPropertyName + ': ',
+            cssPropertyName + ': ',
+        ];
+        const prefixesLength: number = prefixes.length;
+        let stringBuilder: string = "";
+
+        if ( prefixArray ) {
+            prefixes = prefixArray;
         }
-    }
 
-    return stringBuilder;
+        prefixes.forEach((prefix, index) => {
+            stringBuilder += prefix;
+            stringBuilder += cssString + ';';
+
+            // If this is the last prefix, don't add a newline at the end.
+            if ( index < prefixesLength - 1 ) {
+                stringBuilder += '\n';
+            }
+        });
+
+        return stringBuilder;
+    }
 }
 
 // =============================================================================
@@ -181,7 +170,7 @@ const boxShadowViewModel = {
             // This is responsible for setting the box-shadow inline style
             this.boxShadow = boxShadowString;
 
-            return createVendorPrefixes(boxShadowString, 'box-shadow');
+            return utils.createVendorPrefixes(boxShadowString, 'box-shadow');
         },
     },
     components: {
@@ -246,7 +235,7 @@ const borderRadiusViewModel = {
 
             this.borderRadius = borderRadiusString;
 
-            return createVendorPrefixes(borderRadiusString, 'border-radius');
+            return utils.createVendorPrefixes(borderRadiusString, 'border-radius');
         },
         borderWidthFormatted() {
             return `${this.borderWidth}px`;
@@ -263,6 +252,79 @@ const borderRadiusViewModel = {
     },
     components: {
         borderRadiusResult: borderRadiusResultViewModel,
+    },
+};
+
+// =============================================================================
+// BORDER RADIUS VIEWMODEL
+// =============================================================================
+const triangleResultViewModel = {
+    template: '#triangle-result',
+    props: [
+        'triangleDirection',
+        'triangleHeight',
+        'triangleLeft',
+        'triangleRight',
+        'triangleColor',
+        'triangleBuilder',
+        'triangleStyle',
+    ],
+};
+
+const triangleViewModel = {
+    template: '#triangle',
+    data: () => {
+        return {
+            triangleDirection: 'top',
+            triangleHeight: 100,
+            triangleLeft: 80,
+            triangleRight: 80,
+            triangleColor: '#333333',
+            triangleStyle: '',
+        };
+    },
+    computed: {
+        triangleBuilder() {
+            const triangleString = {} as ITriangleProperties;
+
+            switch (this.triangleDirection) {
+                case 'top':
+                    triangleString['border-left'] = `${this.triangleLeft}px solid transparent`;
+                    triangleString['border-right'] = `${this.triangleRight}px solid transparent`;
+                    triangleString['border-top'] = '0';
+                    triangleString['border-bottom'] = `${this.triangleHeight}px solid ${this.triangleColor}`;
+                    break;
+
+                case 'bottom':
+                    triangleString['border-left'] = `${this.triangleLeft}px solid transparent`;
+                    triangleString['border-right'] = `${this.triangleRight}px solid transparent`;
+                    triangleString['border-top'] = `${this.triangleHeight}px solid ${this.triangleColor}`;
+                    triangleString['border-bottom'] = '0';
+                    break;
+
+                case 'left':
+                    triangleString['border-left'] = `${this.triangleHeight}px solid transparent`;
+                    triangleString['border-right'] = '0';
+                    triangleString['border-top'] = `${this.triangleRight}px solid ${this.triangleColor}`;
+                    triangleString['border-bottom'] = `${this.triangleLeft}px solid transparent`;
+                    break;
+
+                case 'right':
+                    triangleString['border-left'] = `${this.triangleHeight}px solid transparent`;
+                    triangleString['border-right'] = '0';
+                    triangleString['border-top'] = `${this.triangleLeft}px solid ${this.triangleColor}`;
+                    triangleString['border-bottom'] = `${this.triangleRight}px solid transparent`;
+                    break;
+
+                default:
+                    throw new Error('An unrecognized Triangle direction was set.');
+            }
+
+            return triangleString;
+        },
+    },
+    components: {
+        triangleResult: triangleResultViewModel,
     },
 };
 
@@ -306,10 +368,10 @@ const rgbToHexViewModel = {
             const green = parseInt(rgbArray[1], 10);
             const blue = parseInt(rgbArray[2], 10);
 
-            this.hexColor(rgbToHex(red, green, blue));
+            this.hexColor(utils.rgbToHex(red, green, blue));
         },
         hexConvert(hexColor: string): void {
-            const rgbArray: IColorArray = hexToRgb(hexColor);
+            const rgbArray: IColorArray = utils.hexToRgb(hexColor);
             const rgbFormatted: any = [
                 rgbArray.b,
                 rgbArray.g,
@@ -325,11 +387,13 @@ const rgbToHexViewModel = {
 // =============================================================================
 // INITIATE FUNCTION
 // =============================================================================
+const utils = new Utils();
+
 interface IMainViewModel {
     activeTab: string;
 }
 
-const app = new Vue({
+const app: IMainViewModel = new Vue({
     el: "#app",
     data: {
         activeTab: 'boxShadow',
@@ -337,6 +401,7 @@ const app = new Vue({
     components: {
         boxShadow: boxShadowViewModel,
         borderRadius: borderRadiusViewModel,
+        triangle: triangleViewModel,
         tab: tabViewModel,
     },
 });
