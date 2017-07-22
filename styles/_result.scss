@@ -1,11 +1,15 @@
 
 .result {
-    background-color: #F8F9FD;
+    background-color: $gray-lighten-5;
     padding: 50px;
     display: flex;
     margin: 0 auto;
     justify-content: center;
 	width: 100%;
+    
+    &.no-padding {
+        padding: 0;
+    }
 
     .full {
         width: 100%;

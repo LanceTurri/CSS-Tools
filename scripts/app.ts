@@ -268,6 +268,7 @@ const triangleResultViewModel = {
         'triangleColor',
         'triangleBuilder',
         'triangleStyle',
+        'triangleCss',
     ],
 };
 
@@ -281,6 +282,7 @@ const triangleViewModel = {
             triangleRight: 80,
             triangleColor: '#333333',
             triangleStyle: '',
+            triangleCss: '',
         };
     },
     computed: {
@@ -319,6 +321,11 @@ const triangleViewModel = {
                 default:
                     throw new Error('An unrecognized Triangle direction was set.');
             }
+
+            this.triangleCss = `border-top: ${triangleString['border-top']};\n`;
+            this.triangleCss += `border-bottom: ${triangleString['border-bottom']};\n`;
+            this.triangleCss += `border-left: ${triangleString['border-left']};\n`;
+            this.triangleCss += `border-right: ${triangleString['border-right']};`;
 
             return triangleString;
         },

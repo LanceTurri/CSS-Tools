@@ -245,13 +245,17 @@
                 :triangleRight="triangleRight"
                 :triangleColor="triangleColor"
                 :triangleBuilder="triangleBuilder"
-                :triangleStyle="triangleStyle"></triangle-result>
+                :triangleStyle="triangleStyle"
+                :triangleCss="triangleCss"></triangle-result>
         </section>
     </script>
 
     <script type="text/x-template" id="triangle-result">
-        <div class="result">
-            <div class="f-self-center" :style="triangleBuilder"></div>
+        <div class="result no-padding f-column">
+            <pre class="language-css">{{ triangleCss }}</pre>
+            <div class="f-row f-center f-grow">
+                <div class="f-self-center" :style="triangleBuilder"></div>
+            </div>
         </div>
     </script>
     

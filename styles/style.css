@@ -12,6 +12,9 @@ html {
 body {
   min-height: 100%; }
 
+pre {
+  margin: 0 !important; }
+
 .header {
   background-color: #00b8d4;
   color: white; }
@@ -92,12 +95,14 @@ body {
         color: #00b8d4; }
 
 .result {
-  background-color: #F8F9FD;
+  background-color: white;
   padding: 50px;
   display: flex;
   margin: 0 auto;
   justify-content: center;
   width: 100%; }
+  .result.no-padding {
+    padding: 0; }
   .result .full {
     width: 100%; }
   .result .card {
@@ -177,8 +182,14 @@ body {
 .f-between {
   justify-content: space-between; }
 
+.f-center {
+  justify-content: center; }
+
 .f-wrap {
   flex-wrap: wrap; }
+
+.f-grow {
+  flex-grow: 1; }
 
 .w-100 {
   width: 100%; }

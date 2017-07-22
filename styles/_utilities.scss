@@ -19,8 +19,16 @@
     justify-content: space-between;
 }
 
+.f-center {
+    justify-content: center;
+}
+
 .f-wrap {
     flex-wrap: wrap;
+}
+
+.f-grow {
+    flex-grow: 1;
 }
 
 .w-100 {
