@@ -291,7 +291,7 @@ const triangleViewModel = {
                 case 'top':
                     triangleString['border-left'] = `${this.triangleLeft}px solid transparent`;
                     triangleString['border-right'] = `${this.triangleRight}px solid transparent`;
-                    triangleString['border-top'] = '0';
+                    triangleString['border-top'] = `0`;
                     triangleString['border-bottom'] = `${this.triangleHeight}px solid ${this.triangleColor}`;
                     break;
 
@@ -299,20 +299,20 @@ const triangleViewModel = {
                     triangleString['border-left'] = `${this.triangleLeft}px solid transparent`;
                     triangleString['border-right'] = `${this.triangleRight}px solid transparent`;
                     triangleString['border-top'] = `${this.triangleHeight}px solid ${this.triangleColor}`;
-                    triangleString['border-bottom'] = '0';
+                    triangleString['border-bottom'] = `0`;
                     break;
 
                 case 'left':
-                    triangleString['border-left'] = `${this.triangleHeight}px solid transparent`;
-                    triangleString['border-right'] = '0';
-                    triangleString['border-top'] = `${this.triangleRight}px solid ${this.triangleColor}`;
+                    triangleString['border-left'] = `${this.triangleHeight}px solid ${this.triangleColor}`;
+                    triangleString['border-right'] = `0`;
+                    triangleString['border-top'] = `${this.triangleRight}px solid transparent`;
                     triangleString['border-bottom'] = `${this.triangleLeft}px solid transparent`;
                     break;
 
                 case 'right':
-                    triangleString['border-left'] = `${this.triangleHeight}px solid transparent`;
-                    triangleString['border-right'] = '0';
-                    triangleString['border-top'] = `${this.triangleLeft}px solid ${this.triangleColor}`;
+                    triangleString['border-left'] = `0`;
+                    triangleString['border-right'] = `${this.triangleHeight}px solid ${this.triangleColor}`;
+                    triangleString['border-top'] = `${this.triangleLeft}px solid transparent`;
                     triangleString['border-bottom'] = `${this.triangleRight}px solid transparent`;
                     break;
 

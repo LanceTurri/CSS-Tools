@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Pompiere" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 
-<body class="flex-column">
+<body class="f-column">
 
     <header class="header" role="banner">
         <h1 class="page-title">CSS Tools</h1>
     </header>
 
-    <main id="app" class="content flex-row">
+    <main id="app" class="content f-row">
         <nav class="sidebar">
             <ul class="sidebar-list">
-                <tab tab-name="box-shadow" icon-class="icon-layers" :active-tab="activeTab" v-on:changetab="activeTab = 'box-shadow'"></tab>
-                <tab tab-name="border-radius" icon-class="icon-vector" :active-tab="activeTab" v-on:changetab="activeTab = 'border-radius'"></tab>
-                <tab tab-name="triangle" icon-class="icon-control-play" :active-tab="activeTab" v-on:changetab="activeTab = 'triangle'"></tab>
+                <tab tab-name="box-shadow" icon-class="fa fa-adjust" :active-tab="activeTab" v-on:changetab="activeTab = 'box-shadow'"></tab>
+                <tab tab-name="border-radius" icon-class="fa fa-square-o" :active-tab="activeTab" v-on:changetab="activeTab = 'border-radius'"></tab>
+                <tab tab-name="triangle" icon-class="fa fa-toggle-up" :active-tab="activeTab" v-on:changetab="activeTab = 'triangle'"></tab>
             </ul>
         </nav>
 
@@ -57,17 +57,23 @@
 
                 <div class="input-group breakout templates">
                     <label class="label-full-width">Target Layout</label>
-                    <div class="template-item" @click="layout = 'single'"><span class="icon-envelope"></span>1 Card</div>
-                    <div class="template-item" @click="layout = 'multiple'"><span class="icon-grid"></span>3 Cards</div>
-                    <div class="template-item" @click="layout = 'image'"><span class="icon-picture"></span>Image</div>
+                    
+                    <div class="template-box f-row f-between f-wrap w-100">
+                        <div class="template-item w-30" :class="[layout === 'single' ? 'active': '']" @click="layout = 'single'">1 Card</div>
+                        <div class="template-item w-30" :class="[layout === 'multiple' ? 'active': '']" @click="layout = 'multiple'">3 Cards</div>
+                        <div class="template-item w-30" :class="[layout === 'image' ? 'active': '']" @click="layout = 'image'">Image</div>
+                    </div>
                 </div>
 
                 <div class="input-group templates">
                     <label class="label-full-width">Quick Templates</label>
-                    <div class="template-item" @click="updateShadow('simple')"><span class="icon-puzzle"></span>Simple</div>
-                    <div class="template-item" @click="updateShadow('soft')"><span class="icon-drop"></span>Soft</div>
-                    <div class="template-item" @click="updateShadow('outline')"><span class="icon-frame"></span>Outline</div>
-                    <div class="template-item" @click="updateShadow('floating')"><span class="icon-mustache"></span>Floating</div>
+
+                    <div class="template-box f-row f-between f-wrap w-100">
+                        <div class="template-item w-30" @click="updateShadow('simple')">Simple</div>
+                        <div class="template-item w-30" @click="updateShadow('soft')">Soft</div>
+                        <div class="template-item w-30" @click="updateShadow('outline')">Outline</div>
+                        <div class="template-item w-30" @click="updateShadow('floating')">Floating</div>
+                    </div>
                 </div>
             </aside>
 
@@ -220,12 +226,16 @@
                     <input type="color" v-model="triangleColor" />
                 </div>
 
-                <!-- <div class="input-group breakout templates">
-                    <label class="label-full-width">Target Layout</label>
-                    <div class="template-item" @click="layout = 'single'"><span class="icon-envelope"></span>1 Card</div>
-                    <div class="template-item" @click="layout = 'multiple'"><span class="icon-grid"></span>3 Cards</div>
-                    <div class="template-item" @click="layout = 'image'"><span class="icon-picture"></span>Image</div>
-                </div> -->
+                <div class="input-group breakout templates">
+                    <label class="label-full-width">Triangle Direction</label>
+                    
+                    <div class="template-box f-row f-between f-wrap w-100">
+                        <div class="template-item w-20" :class="[triangleDirection === 'top' ? 'active': '']" @click="triangleDirection = 'top'"><span class="fa fa-caret-up"></span></div>
+                        <div class="template-item w-20" :class="[triangleDirection === 'bottom' ? 'active': '']" @click="triangleDirection = 'bottom'"><span class="fa fa-caret-down"></span></div>
+                        <div class="template-item w-20" :class="[triangleDirection === 'left' ? 'active': '']" @click="triangleDirection = 'left'"><span class="fa fa-caret-left"></span></div>
+                        <div class="template-item w-20" :class="[triangleDirection === 'right' ? 'active': '']" @click="triangleDirection = 'right'"><span class="fa fa-caret-right"></span></div>
+                    </div>
+                </div>
             </aside>
 
             <triangle-result 
@@ -241,7 +251,7 @@
 
     <script type="text/x-template" id="triangle-result">
         <div class="result">
-            <div class="flex-self-center" :style="triangleBuilder"></div>
+            <div class="f-self-center" :style="triangleBuilder"></div>
         </div>
     </script>
     

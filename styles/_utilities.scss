@@ -1,15 +1,40 @@
 // ==================================================
 // UTILITY STYLES
 // ==================================================
-.flex-row {
+.f-row {
     display: flex;
+    flex-direction: row;
 }
 
-.flex-column {
+.f-column {
     display: flex;
     flex-direction: column;
 }
 
-.flex-self-center {
+.f-self-center {
     align-self: center;
+}
+
+.f-between {
+    justify-content: space-between;
+}
+
+.f-wrap {
+    flex-wrap: wrap;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-20 {
+    width: 20%;
 }
