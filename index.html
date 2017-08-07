@@ -24,7 +24,7 @@
             </ul>
         </nav>
 
-        <component v-bind:is="activeTab"></component>
+        <component :is="activeTab" :parent="sharedData" v-on:update-property="updateProperty"></component>
     </main>
 
     <script type="text/x-template" id="box-shadow">
@@ -59,9 +59,11 @@
                     <label class="label-full-width">Target Layout</label>
                     
                     <div class="template-box f-row f-between f-wrap w-100">
-                        <div class="template-item w-30" :class="[layout === 'single' ? 'active': '']" @click="layout = 'single'">1 Card</div>
-                        <div class="template-item w-30" :class="[layout === 'multiple' ? 'active': '']" @click="layout = 'multiple'">3 Cards</div>
-                        <div class="template-item w-30" :class="[layout === 'image' ? 'active': '']" @click="layout = 'image'">Image</div>
+                        <div class="template-item w-30" :class="[layout === 'small' ? 'active': '']" @click="layout = 'small'">Card (Sm)</div>
+                        <div class="template-item w-30" :class="[layout === 'large' ? 'active': '']" @click="layout = 'large'">Card (Lg)</div>
+                        <div class="template-item w-30" :class="[layout === 'multiple' ? 'active': '']" @click="layout = 'multiple'">Multiple</div>
+                        <div class="template-item w-30" :class="[layout === 'image-list' ? 'active': '']" @click="layout = 'image-list'">Image List</div>
+                        <div class="template-item w-30" :class="[layout === 'image-grid' ? 'active': '']" @click="layout = 'image-grid'">Image Grid</div>
                     </div>
                 </div>
 
@@ -77,14 +79,14 @@
                 </div>
             </aside>
 
-            <box-shadow-result :boxShadow="boxShadow" :boxColor="boxColor" :boxShadowBuilder="boxShadowBuilder" :layout="layout"></box-shadow-result>
+            <box-shadow-result :boxShadow="boxShadow" :boxColor="boxColor" :boxShadowBuilder="boxShadowBuilder" :layout="layout" :parent="parent"></box-shadow-result>
         </section>
     </script>
 
     <script type="text/x-template" id="box-shadow-result">
         <div class="result">
             <div class="multiple-cards full" v-show="layout === 'multiple'">
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
                     <div class="card-header mountain">
                         <div class="card-title">A Winter's Tale</div>
                     </div>
@@ -94,7 +96,7 @@
                     </div>
                 </div>
 
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow }">
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
                     <div class="card-header desert">
                         <div class="card-title">Desert Adventure</div>
                     </div>
@@ -104,19 +106,19 @@
                     </div>
                 </div>
 
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow }">
-                    <div class="card-header beach">
-                        <div class="card-title">Birds Eye View</div>
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                    <div class="card-header explorer">
+                        <div class="card-title">Afraid the Edge</div>
                     </div>
                     
                     <div class="card-content">
-                        A flight to remember.
+                        At the end of the road, there is no where else to go.
                     </div>
                 </div>
             </div>
 
-            <div class="single-card full" v-show="layout === 'single'">
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+            <div class="single-card full" v-show="layout === 'small'">
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
                     <div class="card-header mountain">
                         <div class="card-title">A Winter's Tale</div>
                     </div>
@@ -127,16 +129,60 @@
                 </div>
             </div>
 
-            <div class="image full" v-show="layout === 'image'">
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+            <div class="single-card full" v-show="layout === 'large'">
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                    <div class="card-header mountain">
+                        <div class="card-title">A Winter's Tale</div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <pre class="language-css">{{ boxShadowBuilder }}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image full" v-show="layout === 'image-list'">
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
                     <div class="card-header jewels">
                         <div class="card-title">Jewels</div>
                     </div>
                 </div>
 
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow }">
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
                     <div class="card-header road">
                         <div class="card-title">On the road again</div>
+                    </div>
+                </div>
+
+                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                    <div class="card-header explorer">
+                        <div class="card-title">Afraid the Edge</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image full multiple-cards" v-show="layout === 'image-grid'">
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                    <div class="card-header jewels">
+                        <div class="card-title">Jewels</div>
+                    </div>
+                </div>
+
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                    <div class="card-header road">
+                        <div class="card-title">On the road again</div>
+                    </div>
+                </div>
+
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                    <div class="card-header explorer">
+                        <div class="card-title">Afraid the Edge</div>
+                    </div>
+                </div>
+
+                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                    <div class="card-header mountain">
+                        <div class="card-title">Up at the top</div>
                     </div>
                 </div>
             </div>
@@ -182,14 +228,14 @@
                 </div>
             </aside>
 
-            <border-radius-result :borderRadius="borderRadius" :boxColor="boxColor" :borderColor="borderColor" :borderRadiusBuilder="borderRadiusBuilder" :borderWidth="borderWidthFormatted"></border-radius-result>
+            <border-radius-result :borderRadius="borderRadius" :boxColor="boxColor" :borderColor="borderColor" :borderRadiusBuilder="borderRadiusBuilder" :borderWidth="borderWidthFormatted" :parent="parent"></border-radius-result>
         </section>
     </script>
 
     <script type="text/x-template" id="border-radius-result">
         <div class="result">
             <div class="single-card full">
-                <div class="card border-radius full-width" :style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor, 'border-width': borderWidth }">
+                <div class="card border-radius full-width" :style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor, 'border-width': borderWidth, 'box-shadow': parent.shadow }">
                     <div class="card-header mountain">
                         <div class="card-title">A Winter's Tale</div>
                         <div class="card-meta">{{ borderWidth }}</div>
@@ -260,8 +306,8 @@
     </script>
     
     <script type="text/x-template" id="tab">
-        <li class="sidebar-item" :class="{ active: amActive }" @click="changeTab">
-            <span class="sidebar-icon" :class="iconClass"></span>
+        <li class="sidebar-item" @click="changeTab">
+            <span class="sidebar-icon" :class="[{ active: amActive }, iconClass]"></span>
         </li>
     </script>    
 

@@ -16,10 +16,6 @@
         &:hover .sidebar-icon {
             color: lighten($primary, 10%);
         }
-
-        &.active .sidebar-icon {
-            color: $primary;
-        }
     }
 
     .sidebar-icon {
@@ -29,5 +25,9 @@
         font-size: 24px;
         padding: 15px;
         transition: 150ms color linear;
+
+        &.active{
+            color: $primary;
+        }
     }
 }

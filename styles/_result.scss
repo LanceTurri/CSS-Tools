@@ -16,13 +16,9 @@
     }
     
     .card {
-        border-radius: 5px;
-        margin: 4%;
+        margin: 4% auto;
+        overflow: hidden;
         transition: 100ms box-shadow linear;
-
-		&:first-child {
-			margin-top: 0;
-		}
 
         &.full-width {
             width: 92%;
@@ -34,7 +30,6 @@
 
         .card-header {
 			align-items: flex-end;
-            border-radius: 5px 5px 0 0;
 			color: #f5f5f5;
             display: flex;
             font-size: 24px;
@@ -46,7 +41,6 @@
         .card-content {
             align-items: center;
             background-color: #ffffff;
-            border-radius: 0 0 5px 5px;
             display: flex;
             font-size: 18px;
             min-height: 100px;
@@ -87,8 +81,8 @@
         background-size: cover;
     }
 
-    .beach {
-        background-image: url('https://images.unsplash.com/photo-1494005199821-2cb74a8e75fb?dpr=1&auto=compress,format&fit=crop&w=767&h=511&q=80&cs=tinysrgb&crop=&bg=');
+    .explorer {
+        background-image: url('https://images.unsplash.com/photo-1488572384981-eac03dfeb6b9?dpr=1&auto=format&fit=crop&w=1080&h=720&q=80&cs=tinysrgb&crop=');
         background-position: center center;
         background-size: cover;
     }

@@ -87,6 +87,7 @@ const tabViewModel = {
 const boxShadowResultViewModel = {
     template: '#box-shadow-result',
     props: [
+        'parent',
         'boxShadow',
         'boxColor',
         'boxShadowBuilder',
@@ -123,6 +124,9 @@ const shadowTemplates: { [name: string]: IShadowTemplate } = {
 
 const boxShadowViewModel = {
     template: '#box-shadow',
+    props: [
+        'parent',
+    ],
     data: () => {
         return {
             horizontalLength: 10,
@@ -169,6 +173,7 @@ const boxShadowViewModel = {
 
             // This is responsible for setting the box-shadow inline style
             this.boxShadow = boxShadowString;
+            this.$emit('update-property', { property: 'box-shadow', value: boxShadowString });
 
             return utils.createVendorPrefixes(boxShadowString, 'box-shadow');
         },
@@ -196,6 +201,7 @@ const boxShadowViewModel = {
 const borderRadiusResultViewModel = {
     template: '#border-radius-result',
     props: [
+        'parent',
         'borderRadius',
         'boxColor',
         'borderColor',
@@ -206,13 +212,16 @@ const borderRadiusResultViewModel = {
 
 const borderRadiusViewModel = {
     template: '#border-radius',
+    props: [
+        'parent',
+    ],
     data: () => {
         return {
-            radiusAll: 50,
-            radiusTopLeft: 50,
-            radiusTopRight: 50,
-            radiusBottomRight: 50,
-            radiusBottomLeft: 50,
+            radiusAll: 5,
+            radiusTopLeft: 5,
+            radiusTopRight: 5,
+            radiusBottomRight: 5,
+            radiusBottomLeft: 5,
             boxColor: '#f5f5f5',
             borderColor: '#00b8d4',
             borderRadius: '',
@@ -234,6 +243,7 @@ const borderRadiusViewModel = {
             borderRadiusString += bottomLeft;
 
             this.borderRadius = borderRadiusString;
+            this.$emit('update-property', { property: 'border-radius', value: borderRadiusString });
 
             return utils.createVendorPrefixes(borderRadiusString, 'border-radius');
         },
@@ -274,6 +284,9 @@ const triangleResultViewModel = {
 
 const triangleViewModel = {
     template: '#triangle',
+    props: [
+        'parent',
+    ],
     data: () => {
         return {
             triangleDirection: 'top',
@@ -403,12 +416,33 @@ interface IMainViewModel {
 const app: IMainViewModel = new Vue({
     el: "#app",
     data: {
-        activeTab: 'boxShadow',
+        activeTab: 'box-shadow',
+        sharedData: {
+            shadow: '10px 10px 80px -10px #999999',
+            radius: '5px',
+        },
     },
     components: {
         boxShadow: boxShadowViewModel,
         borderRadius: borderRadiusViewModel,
         triangle: triangleViewModel,
         tab: tabViewModel,
+    },
+    methods: {
+        updateProperty(updateObject: { property: string, value: string }) {
+            switch (updateObject.property) {
+                case 'box-shadow':
+                    this.sharedData.shadow = updateObject.value;
+                    break;
+
+                case 'border-radius':
+                    this.sharedData.radius = updateObject.value;
+                    break;
+
+                default:
+                    console.warn('Property name did not match any known value.');
+                    break;
+            }
+        },
     },
 });

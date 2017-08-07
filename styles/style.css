@@ -43,8 +43,6 @@ pre {
     cursor: pointer; }
     .sidebar .sidebar-item:hover .sidebar-icon {
       color: #08deff; }
-    .sidebar .sidebar-item.active .sidebar-icon {
-      color: #00b8d4; }
   .sidebar .sidebar-icon {
     border-left: 2px solid transparent;
     border-right: 2px solid transparent;
@@ -52,6 +50,8 @@ pre {
     font-size: 24px;
     padding: 15px;
     transition: 150ms color linear; }
+    .sidebar .sidebar-icon.active {
+      color: #00b8d4; }
 
 .editor {
   background-color: #404040;
@@ -106,18 +106,15 @@ pre {
   .result .full {
     width: 100%; }
   .result .card {
-    border-radius: 5px;
-    margin: 4%;
+    margin: 4% auto;
+    overflow: hidden;
     transition: 100ms box-shadow linear; }
-    .result .card:first-child {
-      margin-top: 0; }
     .result .card.full-width {
       width: 92%; }
     .result .card.half-width {
       width: 42%; }
     .result .card .card-header {
       align-items: flex-end;
-      border-radius: 5px 5px 0 0;
       color: #f5f5f5;
       display: flex;
       font-size: 24px;
@@ -127,7 +124,6 @@ pre {
     .result .card .card-content {
       align-items: center;
       background-color: #ffffff;
-      border-radius: 0 0 5px 5px;
       display: flex;
       font-size: 18px;
       min-height: 100px;
@@ -151,8 +147,8 @@ pre {
     background-image: url("https://images.unsplash.com/photo-1477209560495-270790f2251a?dpr=1&auto=compress,format&fit=crop&w=767&h=512&q=80&cs=tinysrgb&crop=&bg=");
     background-position: center center;
     background-size: cover; }
-  .result .beach {
-    background-image: url("https://images.unsplash.com/photo-1494005199821-2cb74a8e75fb?dpr=1&auto=compress,format&fit=crop&w=767&h=511&q=80&cs=tinysrgb&crop=&bg=");
+  .result .explorer {
+    background-image: url("https://images.unsplash.com/photo-1488572384981-eac03dfeb6b9?dpr=1&auto=format&fit=crop&w=1080&h=720&q=80&cs=tinysrgb&crop=");
     background-position: center center;
     background-size: cover; }
   .result .desert {
