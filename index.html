@@ -10,7 +10,6 @@
 </head>
 
 <body class="f-column">
-
     <header class="header" role="banner">
         <h1 class="page-title">CSS Tools</h1>
     </header>
@@ -24,7 +23,9 @@
             </ul>
         </nav>
 
-        <component :is="activeTab" :parent="sharedData" v-on:update-property="updateProperty"></component>
+        <keep-alive>
+            <component :is="activeTab" :parent="sharedData" v-on:update-property="updateProperty"></component>
+        </keep-alive>
     </main>
 
     <script type="text/x-template" id="box-shadow">
@@ -92,7 +93,7 @@
                     </div>
                     
                     <div class="card-content">
-                        <pre class="language-css">{{ boxShadowBuilder }}</pre>
+                        <pre><code class="language-css">{{ boxShadowBuilder }}</code></pre>
                     </div>
                 </div>
 
@@ -242,7 +243,7 @@
                     </div>
                     
                     <div class="card-content">
-                        <pre class="language-css">{{ borderRadiusBuilder }}</pre>
+                        <pre><code class="language-css">{{ borderRadiusBuilder }}</code></pre>
                     </div>
                 </div>
             </div>
@@ -314,6 +315,5 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue"></script>
     <script src="scripts/app.min.js"></script>
-
 </body>
 </html>

@@ -173,6 +173,8 @@ const boxShadowViewModel = {
 
             // This is responsible for setting the box-shadow inline style
             this.boxShadow = boxShadowString;
+
+            // Update the parent properties to share.
             this.$emit('update-property', { property: 'box-shadow', value: boxShadowString });
 
             return utils.createVendorPrefixes(boxShadowString, 'box-shadow');
