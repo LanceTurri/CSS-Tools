@@ -1,15 +1,10 @@
 
 .result {
     background-color: $gray-lighten-5;
-    padding: 50px;
     display: flex;
     margin: 0 auto;
     justify-content: center;
-	width: 100%;
-    
-    &.no-padding {
-        padding: 0;
-    }
+    width: 100%;
 
     .full {
         width: 100%;
@@ -45,12 +40,6 @@
             font-size: 18px;
             min-height: 100px;
             padding: 20px 40px;
-
-			pre {
-				background-color: transparent;
-				font-family: 'Fira Mono', monospace;
-				font-size: 15px;
-			}
         }
     }
 

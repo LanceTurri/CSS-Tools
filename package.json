@@ -1,4 +1,10 @@
 {
+  "author": {
+    "name": "Lance Turri",
+    "email": "lance.turri@gmail.com"
+  },
+  "description": "A CSS generator web app.",
+  "version": "0.1.0",
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -12,5 +18,10 @@
     "gulp-uglify": "^3.0.0",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "GIT",
+    "url": "https://github.com/LanceTurri/CSS-Tools"
   }
 }

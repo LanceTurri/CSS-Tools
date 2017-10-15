@@ -1,0 +1,28 @@
+pre {
+	-moz-hyphens: none;
+	-moz-tab-size: 4;
+	-ms-hyphens: none;
+	-o-tab-size: 4;
+	-webkit-hyphens: none;
+	background: #ffffff;
+	border-top: 1px solid #e0e0e0;
+	color: black;
+	display: flex;
+	flex-shrink: 0;
+	flex-grow: 0;
+	font-family: 'Fira Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	height: 15%;
+	hyphens: none;
+	line-height: 1.5;
+	margin: .5em 0;
+	min-height: 105px;
+	overflow: auto;
+	padding: 1em;
+	tab-size: 4;
+	text-align: left;
+	text-shadow: 0 1px white;
+	white-space: pre;
+	word-break: normal;
+	word-spacing: normal;
+	word-wrap: normal;
+}

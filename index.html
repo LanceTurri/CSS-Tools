@@ -85,108 +85,112 @@
     </script>
 
     <script type="text/x-template" id="box-shadow-result">
-        <div class="result">
-            <div class="multiple-cards full" v-show="layout === 'multiple'">
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header mountain">
-                        <div class="card-title">A Winter's Tale</div>
+        <div class="result f-column">
+            <div class="f-row f-grow f-center o-auto">
+                <div class="multiple-cards full" v-show="layout === 'multiple'">
+                    <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header mountain">
+                            <div class="card-title">A Winter's Tale</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            A sad tale's best for winter: I have one of sprites and goblins.
+                        </div>
                     </div>
-                    
-                    <div class="card-content">
-                        <pre><code class="language-css">{{ boxShadowBuilder }}</code></pre>
+
+                    <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header desert">
+                            <div class="card-title">Desert Adventure</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            Sometimes you just need to get away and explore.
+                        </div>
+                    </div>
+
+                    <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header explorer">
+                            <div class="card-title">Afraid the Edge</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            At the end of the road, there is no where else to go.
+                        </div>
                     </div>
                 </div>
 
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header desert">
-                        <div class="card-title">Desert Adventure</div>
-                    </div>
-                    
-                    <div class="card-content">
-                        Sometimes you just need to get away and explore.
+                <div class="single-card full" v-show="layout === 'small'">
+                    <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header mountain">
+                            <div class="card-title">A Winter's Tale</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            A sad tale's best for winter: I have one of sprites and goblins.
+                        </div>
                     </div>
                 </div>
 
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header explorer">
-                        <div class="card-title">Afraid the Edge</div>
+                <div class="single-card full" v-show="layout === 'large'">
+                    <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header mountain">
+                            <div class="card-title">A Winter's Tale</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            A sad tale's best for winter: I have one of sprites and goblins.
+                        </div>
                     </div>
-                    
-                    <div class="card-content">
-                        At the end of the road, there is no where else to go.
+                </div>
+
+                <div class="image full" v-show="layout === 'image-list'">
+                    <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header jewels">
+                            <div class="card-title">Jewels</div>
+                        </div>
+                    </div>
+
+                    <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header road">
+                            <div class="card-title">On the road again</div>
+                        </div>
+                    </div>
+
+                    <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header explorer">
+                            <div class="card-title">Afraid the Edge</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image full multiple-cards" v-show="layout === 'image-grid'">
+                    <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header jewels">
+                            <div class="card-title">Jewels</div>
+                        </div>
+                    </div>
+
+                    <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header road">
+                            <div class="card-title">On the road again</div>
+                        </div>
+                    </div>
+
+                    <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header explorer">
+                            <div class="card-title">Afraid the Edge</div>
+                        </div>
+                    </div>
+
+                    <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
+                        <div class="card-header mountain">
+                            <div class="card-title">Up at the top</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="single-card full" v-show="layout === 'small'">
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header mountain">
-                        <div class="card-title">A Winter's Tale</div>
-                    </div>
-                    
-                    <div class="card-content">
-                        <pre class="language-css">{{ boxShadowBuilder }}</pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="single-card full" v-show="layout === 'large'">
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header mountain">
-                        <div class="card-title">A Winter's Tale</div>
-                    </div>
-                    
-                    <div class="card-content">
-                        <pre class="language-css">{{ boxShadowBuilder }}</pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="image full" v-show="layout === 'image-list'">
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header jewels">
-                        <div class="card-title">Jewels</div>
-                    </div>
-                </div>
-
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header road">
-                        <div class="card-title">On the road again</div>
-                    </div>
-                </div>
-
-                <div class="card full-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header explorer">
-                        <div class="card-title">Afraid the Edge</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="image full multiple-cards" v-show="layout === 'image-grid'">
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header jewels">
-                        <div class="card-title">Jewels</div>
-                    </div>
-                </div>
-
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header road">
-                        <div class="card-title">On the road again</div>
-                    </div>
-                </div>
-
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header explorer">
-                        <div class="card-title">Afraid the Edge</div>
-                    </div>
-                </div>
-
-                <div class="card half-width" :style="{ 'box-shadow': boxShadow, 'border-radius': parent.radius }">
-                    <div class="card-header mountain">
-                        <div class="card-title">Up at the top</div>
-                    </div>
-                </div>
-            </div>
+            <pre class="language-css">{{ boxShadowBuilder }}</pre>
         </div>
     </script>
 
@@ -234,19 +238,23 @@
     </script>
 
     <script type="text/x-template" id="border-radius-result">
-        <div class="result">
-            <div class="single-card full">
-                <div class="card border-radius full-width" :style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor, 'border-width': borderWidth, 'box-shadow': parent.shadow }">
-                    <div class="card-header mountain">
-                        <div class="card-title">A Winter's Tale</div>
-                        <div class="card-meta">{{ borderWidth }}</div>
-                    </div>
-                    
-                    <div class="card-content">
-                        <pre><code class="language-css">{{ borderRadiusBuilder }}</code></pre>
+        <div class="result f-column">
+            <div class="f-row f-center f-grow o-auto">
+                <div class="single-card full">
+                    <div class="card border-radius full-width" :style="{ 'border-radius': borderRadius, 'background-color': boxColor, 'border-color': borderColor, 'border-width': borderWidth, 'box-shadow': parent.shadow }">
+                        <div class="card-header mountain">
+                            <div class="card-title">A Winter's Tale</div>
+                            <div class="card-meta">{{ borderWidth }}</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            A sad tale's best for winter: I have one of sprites and goblins.
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <pre class="language-css">{{ borderRadiusBuilder }}</pre>
         </div>
     </script>
 
@@ -298,11 +306,12 @@
     </script>
 
     <script type="text/x-template" id="triangle-result">
-        <div class="result no-padding f-column">
-            <pre class="language-css">{{ triangleCss }}</pre>
-            <div class="f-row f-center f-grow">
+        <div class="result f-column">
+            <div class="f-row f-center f-grow o-auto">
                 <div class="f-self-center" :style="triangleBuilder"></div>
             </div>
+
+            <pre class="language-css">{{ triangleCss }}</pre>
         </div>
     </script>
     
